@@ -2,8 +2,29 @@ package jumpingalien.model;
 import jumpingalien.util.Sprite;
 import be.kuleuven.cs.som.annotate.Basic;
 
+/**
+ * A class for dealing with the aliens called Mazub.
+ *    In the current version Mazub does not move LOL.
+ * 
+ * @version  1.0
+ * @author   Anne Wijffels
+ * @author   Joni Allaert
+ */
 
 public class Mazub {
+	//Joni
+	/**
+	 * Initializes an alien with the given position and given sprite.
+	 * @param pixelLeftX
+	 * 		  The x-coordinate of the given position.
+	 * @param pixelBottomY
+	 * 		  The y-coordinate of the given position.
+	 * @param sprites
+	 * 		  An array of all possible images of the alien.
+	 * @post  The current sprite is the image of the alien when he is not moving horizontally,
+	 * 		  has not moved horizontally in the last second of in-game-time and is not ducking.
+	 * 		  | new.getCurrentSprite() = sprites
+	 */
 	
 	public Mazub(int pixelLeftX, int pixelBottomY, Sprite[] sprites) {
 		this.positionX = pixelLeftX;
@@ -11,64 +32,100 @@ public class Mazub {
 		this.sprites = sprites;
 		this.currentSprite = sprites[0];
 	}
-	//JOni
-	private Sprite[] sprites;
-	private Sprite currentSprite;
-	//Joni
+	
 	//total programming
-	// documentatie herzien
 	/**
-	 * Mazub starts moving horizontally.
+	 * Mazub starts moving horizontally to the left.
+	 * @post Mazub starts moving with an initial horizontal velocity.
+	 * 		 Mazub's horizontal velocity increases with the constant horizontal acceleration.
+	 //(volgens mij moet dit aanpasbaar zijn)*  	 Mazub's horizontal velocity after some time t (in seconds) is v_{xnew} = v_{xcurrent} + a_x t.
+	 *  	 When Mazub's horizontal velocity equals the maximal velocity, then the velocity is constant.
+	 * @post Mazub's position is updated based on the distance travelled.
+	 */
+	public void startMoveLeft(){
+		this.setHorizontalVelocity(-(this.getInitialHorizontalVelocity()));
+		this.horizontalAccelaration = -this.getHorizontalAccelaration();
+		this.move = true;
+	}
+	//Als we documentatie startMoveLeft aanpassen dan ook deze.
+	/**
+	 * Mazub starts moving horizontally to the right.
 	 * @post Mazub starts moving with a horizontal velocity v_x = 1 m/s.
 	 * 		 Mazub's horizontal velocity increases with acceleration a_x = 0.9 m/s².
 	 *  	 Mazub's horizontal velocity after some time t (in seconds) is v_{xnew} = v_{xcurrent} + a_x t.
 	 *  	 When Mazub's horizontal velocity equals v_max = 3 m/s, then the velocity is constant.
-	 *  @effect if Mazub is moving, then every 0.1 second the velocity and position gets updated.
-	 *  		| advanceTime(this.getPositionX(), this.getPositionY(), this.getVelocity(), 0.1)
+	 * @post Mazub's position is updated based on the distance travelled.
 	 */
-	public void startMove(){
+	public void startMoveRight(){
+		this.setHorizontalVelocity(this.getInitialHorizontalVelocity());
+		this.horizontalAccelaration = this.getHorizontalAccelaration();
 		this.move = true;
-		advanceTime(this.getInitialHorizontalVelocity(),0.1);
-		while (this.move == true){
-			advanceTime(this.getHorizontalVelocity(), 0.1);
-		}
 	}
-	//extra stuk 1
-	public void startMoveLeft(){}
-	public void startMoveRight(){}
-	public void endMoveLeft(){}
-	public void endMoveRight(){}
+	
+	/**
+	 * Mazub stops moving to the left.
+	 * @post Mazub's horizontal velocity equals v_x = 0 m/s.
+	 * 		| new.getHorizontalVelocity() = 0;
+	 */
+	public void endMoveLeft(){
+		this.setHorizontalVelocity(0);
+		this.move = false;
+	}
+	/**
+	 * Mazub stops moving to the right.
+	 * @post Mazub's horizontal velocity equals v_x = 0 m/s.
+	 * 		| new.getHorizontalVelocity() = 0;
+	 */
+	public void endMoveRight(){
+		this.setHorizontalVelocity(0);
+		this.move = false;
+	}
+	
+	private boolean move;
+	
+	/**
+	 * Mazub starts ducking.
+	 * @post if Mazub is not moving horizontally, has not moved horizontally within the last
+	 * 		 second of in-game-time, then images_1 is displayed.
+	 * 		 | if(this.getHorizontalVelocity() == 0) new.currentSprite = sprites[1]
+	 * @post if Mazub is moving to the right or was moving to the right (within 1s), 
+	 * 		 then images_6 is displayed.
+	 * 		 | if(this.startMoveRight == true) new.currentSprite = sprites[6]
+	 * @post if Mazub is moving to the left or was moving to the left (within 1s), 
+	 * 		 then images_7 is displayed.
+	 * 		 | if(this.startMoveRight == true) new.currentSprite = sprites[7]
+	 */
 	public void startDuck(){}
 	public void endDuck(){}
 	public void startJump(){}
 	public void endJump(){}
+	/**
+	 * This method gives you the current sprite of the alien.
+	 * @return Returns the current sprite.
+	 */
 	public Sprite getCurrentSprite(){
 		return this.currentSprite;
 	}
-	//einde extra stuk 1
+	private Sprite[] sprites;
+	private Sprite currentSprite;
 	//total programming
 	/**
-	 * Mazub stops moving.
-	 * @post Mazub's horizontal velocity equals v_x = 0 m/s.
+	 * This method gives you the current horizontal velocity of the alien.
+	 * @return Returns the current horizontal velocity.
 	 */
-	public void endMove(){
-		this.move = false;
-		setHorizontalVelocity(0);
-	}
-	
-	private boolean move = false;
-	private double horizontalVelocity;
-	
 	public double getHorizontalVelocity(){
 		return this.horizontalVelocity;
 	}
-	//Extra Stukje Joni 2
+	private double horizontalVelocity=0;
 	
-	private double verticalVelocity;
-	
+	/**
+	 * This method gives you the current vertical velocity of the alien.
+	 * @return Returns the current vertical velocity.
+	 */
 	public double getVerticalVelocity(){
 		return this.verticalVelocity;
 	}
+	private double verticalVelocity=0;
 	
 	/**
 	 * Return the value for the vertical acceleration of Mazub.
@@ -85,7 +142,6 @@ public class Mazub {
 	public double getVerticalAccelaration(){
 		return -10;
 	}
-	//Einde extra stukje 2
 	/**
 	 * 
 	 * @param velocity
@@ -98,11 +154,12 @@ public class Mazub {
 	 * 			| if (0<velocity<3) newgetHorizontalVelocity() = velocity
 	 */
 	public void setHorizontalVelocity(double velocity){
-		if(velocity < 0) 
-			this.horizontalVelocity = 0;
-		if(velocity > 3) 
-			this.horizontalVelocity = 3;
-		this.horizontalVelocity = velocity;
+		if(velocity > this.getMaximumHorizontalVelocity()) 
+			this.horizontalVelocity = this.getMaximumHorizontalVelocity();
+		if(velocity < -(this.getMaximumHorizontalVelocity())) 
+			this.horizontalVelocity = -(this.getMaximumHorizontalVelocity());
+		else
+			this.horizontalVelocity = velocity;
 	}
 	
 	//Moet de speler zelf de intiële snelheden kunnen aanpassen?
@@ -123,21 +180,7 @@ public class Mazub {
 	public double getInitialHorizontalVelocity(){
 		return 1;
 	}
-	
-	/**
-	 * Return the minimal value for the horizontal velocity of Mazub.
-	 * 
-	 * @note   because the documentation has not revealed the actual value, it is
-	 *         possible to change these values without having to notify
-	 *         any clients of the class. At that time, we might have to
-	 *         add new constructors by means of which we can initialize
-	 *         new Mazubs and this does not break the contract with the
-	 *         clients.
-	 */
-	@Basic
-	public double getMinimumHorizontalVelocity(){
-		return 0;	
-	}
+
 	
 	/**
 	 * Return the maximal value for the horizontal velocity of Mazub.
@@ -170,8 +213,7 @@ public class Mazub {
 	 * 			| &&(velocity>= this.getInitialHorizontalVelocity())
 	 */
 	public boolean isValidVelocity(double velocity){
-		return(velocity <= this.getMaximumHorizontalVelocity())
-				&&(velocity>= this.getMinimumHorizontalVelocity());
+		return(Math.abs(velocity) <= this.getMaximumHorizontalVelocity());
 		
 	}
 	
@@ -192,6 +234,7 @@ public class Mazub {
 	public double getHorizontalAccelaration(){
 		return 0.9;
 	}
+	private double horizontalAccelaration=0;
 	/**
 	 * Returns the x-coordinate of the position of Mazub.
 	 */
@@ -227,15 +270,19 @@ public class Mazub {
 	 *         the highest possible value for the hours. The important thing
 	 *         is that the documentation of the method reveals what happens
 	 *         in those exceptional cases.
-	 * @note   The last postcondition is not really needed. Because of the interia
+	 * @note   The last postcondition is not really needed. Because of the inertia
 	 *         axiom, everything that is not touched upon in the specification
 	 *         of a method keeps its value.
 	 */
 	public void setPositionX(int position){
-		if ((position > MAX_POSITIONX)||(position< MIN_POSITIONX))
-			position = ((position - MIN_POSITIONX) % (MAX_POSITIONX-MIN_POSITIONX+1)) 
+		if ((position >= MAX_POSITIONX)||(position<= MIN_POSITIONX)){
+			this.positionX = ((position - MIN_POSITIONX) % (MAX_POSITIONX-MIN_POSITIONX+1)) 
 			+ MIN_POSITIONX;
-		this.positionX = position;
+			if(this.positionX<0)
+				this.positionX += MAX_POSITIONX+1;
+		}
+		else
+			this.positionX = position;
 	}
 	/**
 	 * Returns the y-coordinate of the position of Mazub.
@@ -275,9 +322,10 @@ public class Mazub {
 	 */
 	public void setPositionY(int position){
 		if ((position > MAX_POSITIONY)||(position< MIN_POSITIONY))
-			position = ((position - MIN_POSITIONY) % (MAX_POSITIONY-MIN_POSITIONY+1)) 
+			this.positionY = ((position - MIN_POSITIONY) % (MAX_POSITIONY-MIN_POSITIONY+1)) 
 			+ MIN_POSITIONY;
-		this.positionY = position;
+		else
+			this.positionY = position;
 	}
 	
 	private int positionX;
@@ -299,8 +347,8 @@ public class Mazub {
 	 * @return
 	 * 			returns true if it is a valid time.
 	 */
-	public boolean isValidTime(double time){
-		return((time >=0)&&(time <= 0.2));
+	public boolean isValidTime(double deltaT){
+		return((deltaT >=0)&&(deltaT <= 0.2));
 	}
 	
 	/**
@@ -312,12 +360,12 @@ public class Mazub {
 	 * @thows IllegalArgumentException
 	 * 			| ! isValidVelocity(velocity) || ! isValidTime(time)
 	 */
-	public double distanceTraveled(double velocity, double time)throws IllegalArgumentException{
-		if(! isValidVelocity(velocity) || ! isValidTime(time))
-			throw new IllegalArgumentException();
-		if (velocity == this.getMaximumHorizontalVelocity())
-			return (velocity *time);
-		return (velocity * time + 0.5 * this.getHorizontalAccelaration());
+	public double distanceTraveled(double velocity, double deltaT){
+		if (Math.abs(velocity) == this.getMaximumHorizontalVelocity())
+			return (velocity *deltaT);
+		if(velocity>0)
+			return (velocity * deltaT + 0.5 * this.getHorizontalAccelaration()*deltaT*deltaT);
+		return (velocity * deltaT + 0.5 * (-(this.getHorizontalAccelaration()*deltaT*deltaT)));
 	}
 	//defensive programming
 	// is dit enkel de horizontale velocity?
@@ -337,17 +385,34 @@ public class Mazub {
 	 * 			...
 	 * 			|! isValidTime(time)
 	 * 
-	 
 	 * 				 
 	 */
-	public void advanceTime( double velocity, double time) 
+	public void advanceTime( double velocity, double deltaT) 
 			throws IllegalArgumentException{
-		if (! isValidTime(time) || ! isValidVelocity(velocity))
+		if (! isValidTime(deltaT))
 			throw new IllegalArgumentException();
-		setPositionX((int)(this.getPositionX() + distanceTraveled(velocity, time)));
-		setHorizontalVelocity(velocity + this.getHorizontalAccelaration()*time);
+		try{
+			if(!isValidVelocity(velocity))
+				throw new IllegalArgumentException();
+		}
+		catch(IllegalArgumentException exc){
+			if(velocity<= -this.getMaximumHorizontalVelocity())
+				velocity=-this.getMaximumHorizontalVelocity();
+			if(velocity>=this.getMaximumHorizontalVelocity())
+				velocity = this.getMaximumHorizontalVelocity();
+		}
+		if(this.move == true){
+		setPositionX((int)(this.getPositionX() + (distanceTraveled(velocity, deltaT))*100));
+		setHorizontalVelocity(advancedVelocity(velocity,deltaT));}
+		
 	}
 	
+	public double advancedVelocity(double velocity, double deltaT){
+		if(velocity>0)
+			return velocity + this.getHorizontalAccelaration()*deltaT;
+		return velocity - this.getHorizontalAccelaration()*deltaT;
+	}
 	
+	private double time;
 
 }
