@@ -285,7 +285,7 @@ public class Facade implements IFacade{
 	@Override
 	public void advanceTime(Mazub alien, double dt) {
 		// TODO Auto-generated method stub
-		alien.advanceTime(alien.getHorizontalVelocity(), dt);
+		alien.advanceTime(alien.getHorizontalVelocity(), alien.getVerticalVelocity(), dt);
 		
 	}
 	
