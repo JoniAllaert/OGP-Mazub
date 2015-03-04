@@ -1,8 +1,8 @@
 package jumpingalien.model;
 import jumpingalien.util.Sprite;
 import be.kuleuven.cs.som.annotate.Basic;
-//Is vliegen okee?
-//TODO
+//TODO is vliegen ok?
+
 /**
  * A class for dealing with the aliens called Mazub.
  *    In the current version Mazub does not move LOL.
@@ -13,7 +13,6 @@ import be.kuleuven.cs.som.annotate.Basic;
  */
 
 public class Mazub {
-	//Joni
 	/**
 	 * Initializes an alien with the given position and given sprite.
 	 * @param pixelLeftX
@@ -84,44 +83,6 @@ public class Mazub {
 	
 	private boolean move;
 	
-	/**
-	 * Mazub starts ducking.
-	 * @post if Mazub is not moving horizontally, has not moved horizontally within the last
-	 * 		 second of in-game-time, then images_1 is displayed.
-	 * 		 | if(this.getHorizontalVelocity() == 0) new.currentSprite = sprites[1]
-	 * @post if Mazub is moving to the right or was moving to the right (within 1s), 
-	 * 		 then images_6 is displayed.
-	 * 		 | if(this.startMoveRight == true) new.currentSprite = sprites[6]
-	 * @post if Mazub is moving to the left or was moving to the left (within 1s), 
-	 * 		 then images_7 is displayed.
-	 * 		 | if(this.startMoveRight == true) new.currentSprite = sprites[7]
-	 */
-	//defensive programming
-	//Moet de velocity afnemen omwille van de zwaartekracht?
-	public void startJump(){
-		this.jump = true;
-		setVerticalVelocity(this.getInitialVerticalVelocity());
-		
-	}
-	public void endJump(){
-		setVerticalVelocity(0);
-		
-	}
-	
-	private boolean jump;
-	
-	public void startDuck(){}
-	public void endDuck(){}
-	
-	/**
-	 * This method gives you the current sprite of the alien.
-	 * @return Returns the current sprite.
-	 */
-	public Sprite getCurrentSprite(){
-		return this.currentSprite;
-	}
-	private Sprite[] sprites;
-	private Sprite currentSprite;
 	//total programming
 	/**
 	 * This method gives you the current horizontal velocity of the alien.
@@ -131,44 +92,6 @@ public class Mazub {
 		return this.horizontalVelocity;
 	}
 	
-	
-	
-	private double horizontalVelocity=0;
-	
-	/**
-	 * This method gives you the current vertical velocity of the alien.
-	 * @return Returns the current vertical velocity.
-	 */
-	public double getVerticalVelocity(){
-		return this.verticalVelocity;
-	}
-	
-	public void setVerticalVelocity(double velocity){
-			this.verticalVelocity = velocity;
-	}
-	
-	@Basic
-	public double getInitialVerticalVelocity(){
-		return 8;
-	}
-	
-	private double verticalVelocity=0;
-	
-	/**
-	 * Return the value for the vertical acceleration of Mazub.
-	 * 
-	 * @return the value for the vertical acceleration of Mazub. 
-	 * @note   because the documentation has not revealed the actual value, it is
-	 *         possible to change these values without having to notify
-	 *         any clients of the class. At that time, we might have to
-	 *         add new constructors by means of which we can initialize
-	 *         new Mazubs and this does not break the contract with the
-	 *         clients.
-	 */
-	@Basic
-	public double getVerticalAccelaration(){
-		return -10;
-	}
 	/**
 	 * 
 	 * @param velocity
@@ -189,7 +112,7 @@ public class Mazub {
 			this.horizontalVelocity = velocity;
 	}
 	
-	//Moet de speler zelf de intiële snelheden kunnen aanpassen?
+	//TODO Moet de speler zelf de intiële snelheden kunnen aanpassen?
 	/**
 	 * Return the initial value for the horizontal velocity of Mazub.
 	 * 
@@ -208,7 +131,6 @@ public class Mazub {
 		return 1;
 	}
 
-	
 	/**
 	 * Return the maximal value for the horizontal velocity of Mazub.
 	 * 
@@ -226,8 +148,7 @@ public class Mazub {
 	public double getMaximumHorizontalVelocity(){
 		return 3;	
 	}
-	
-	
+		
 	/**
 	 * A method that checks if the velocity is between minimal horizontal velocity 
 	 * and maximal horizontal velocity
@@ -241,9 +162,10 @@ public class Mazub {
 	 */
 	public boolean isValidHorizontalVelocity(double velocity){
 		return(Math.abs(velocity) <= this.getMaximumHorizontalVelocity());
-		
 	}
 	
+	private double horizontalVelocity=0;
+
 	/**
 	 * Return the value for the horizontal acceleration of Mazub.
 	 * 
@@ -262,6 +184,86 @@ public class Mazub {
 		return 0.9;
 	}
 	private double horizontalAccelaration=0;
+	
+	//defensive programming
+	//TODO Moet de velocity afnemen omwille van de zwaartekracht?
+	public void startJump(){
+		this.jump = true;
+		setVerticalVelocity(this.getInitialVerticalVelocity());
+		
+	}
+	public void endJump(){
+		setVerticalVelocity(0);
+		
+	}
+	
+	private boolean jump;
+	
+	/**
+	 * This method gives you the current vertical velocity of the alien.
+	 * @return Returns the current vertical velocity.
+	 */
+	public double getVerticalVelocity(){
+		return this.verticalVelocity;
+	}
+	
+	public void setVerticalVelocity(double velocity){
+			this.verticalVelocity = velocity;
+	}
+	
+	@Basic
+	public double getInitialVerticalVelocity(){
+		return 8;
+	}
+	
+	public boolean isValidVerticalVelocity(double velocity){
+		return((velocity ==8) ||(velocity <=0));
+		
+	}
+	
+	private double verticalVelocity=0;
+	
+	/**
+	 * Return the value for the vertical acceleration of Mazub.
+	 * 
+	 * @return the value for the vertical acceleration of Mazub. 
+	 * @note   because the documentation has not revealed the actual value, it is
+	 *         possible to change these values without having to notify
+	 *         any clients of the class. At that time, we might have to
+	 *         add new constructors by means of which we can initialize
+	 *         new Mazubs and this does not break the contract with the
+	 *         clients.
+	 */
+	@Basic
+	public double getVerticalAccelaration(){
+		return -10;
+	}
+	
+	/**
+	 * Mazub starts ducking.
+	 * @post if Mazub is not moving horizontally, has not moved horizontally within the last
+	 * 		 second of in-game-time, then images_1 is displayed.
+	 * 		 | if(this.getHorizontalVelocity() == 0) new.currentSprite = sprites[1]
+	 * @post if Mazub is moving to the right or was moving to the right (within 1s), 
+	 * 		 then images_6 is displayed.
+	 * 		 | if(this.startMoveRight == true) new.currentSprite = sprites[6]
+	 * @post if Mazub is moving to the left or was moving to the left (within 1s), 
+	 * 		 then images_7 is displayed.
+	 * 		 | if(this.startMoveRight == true) new.currentSprite = sprites[7]
+	 */
+	public void startDuck(){}
+	public void endDuck(){}
+	
+	/**
+	 * This method gives you the current sprite of the alien.
+	 * @return Returns the current sprite.
+	 */
+	public Sprite getCurrentSprite(){
+		return this.currentSprite;
+	}
+	private Sprite[] sprites;
+	private Sprite currentSprite;
+	
 	/**
 	 * Returns the x-coordinate of the position of Mazub.
 	 */
@@ -269,8 +271,8 @@ public class Mazub {
 		return this.positionX;
 	}
 	
-//beweegt het beeld mee met het poppetje, of steeds nieuwe beelden, is dit een goede oplossing?
-// total programming?
+	//TODO beweegt het beeld mee met het poppetje, of steeds nieuwe beelden, is dit een goede oplossing?
+	//TODO total programming?
 	/**
 	 * Set the x-coordinate of the position of Mazub. 
 	 *
@@ -311,13 +313,21 @@ public class Mazub {
 		else
 			this.positionX = position;
 	}
+	
+	private int positionX;
+	
+	private static final int MIN_POSITIONX = 0;
+	
+	private static final int MAX_POSITIONX = 1023;
+	
 	/**
 	 * Returns the y-coordinate of the position of Mazub.
 	 */
 	public int getPositionY(){
 		return this.positionY;
 	}
-	//Moet ge zijn hoofd zien? (anders size eraf)
+	
+	//TODO Moet ge zijn hoofd zien? (anders size eraf)
 	/**
 	 * Set the y-coordinate of the position of Mazub. 
 	 *
@@ -359,13 +369,7 @@ public class Mazub {
 			this.positionY = position;
 	}
 	
-	private int positionX;
-	
 	private int positionY;
-	
-	private static final int MIN_POSITIONX = 0;
-	
-	private static final int MAX_POSITIONX = 1023;
 	
 	private static final int MIN_POSITIONY = 0;
 	
@@ -382,38 +386,7 @@ public class Mazub {
 		return((deltaT >=0)&&(deltaT <= 0.2));
 	}
 	
-	public boolean isValidVerticalVelocity(double velocity){
-		return((velocity ==8) ||(velocity <=0));
-		
-	}
-	// Moet dit totaal of deffensief geprogrammeerd worden?
-	/**
-	 * Calculates the distance traveled based on given velocity and time duration.
-	 * 
-	 * @param velocity
-	 * @param time
-	 * @return distance traveled.
-	 * @thows IllegalArgumentException
-	 * 			| ! isValidVelocity(velocity) || ! isValidTime(time)
-	 */
-	public double distanceTraveledHorizontal(double velocity, double deltaT){
-		if (Math.abs(velocity) == this.getMaximumHorizontalVelocity())
-			return (velocity *deltaT);
-		if(velocity>0)
-			return (velocity * deltaT + 0.5 * this.getHorizontalAccelaration()*deltaT*deltaT);
-		return (velocity * deltaT + 0.5 * (-(this.getHorizontalAccelaration()*deltaT*deltaT)));
-	}
-	//Wat te doen als velocity niet 8 is en niet negatief is?
-	public double distanceTraveledVertical(double velocity, double deltaT){
-		if (velocity == this.getInitialVerticalVelocity())
-			return (velocity *deltaT);
-		if(velocity<=0)
-			return (velocity * deltaT + 0.5 * this.getVerticalAccelaration()*deltaT*deltaT);
-		return 0;
-	}
-	
 	//defensive programming
-	// is dit enkel de horizontale velocity?
 	/**
 	 * This method updates the position and horizontal velocity of Mazub.
 	 * @param positionX
@@ -459,7 +432,33 @@ public class Mazub {
 		
 	}
 	
-	// Moet dit totaal of deffensief geprogrammeerd worden?
+	//TODO Moet dit totaal of deffensief geprogrammeerd worden?
+	/**
+	 * Calculates the distance traveled based on given velocity and time duration.
+	 * 
+	 * @param velocity
+	 * @param time
+	 * @return distance traveled.
+	 * @thows IllegalArgumentException
+	 * 			| ! isValidVelocity(velocity) || ! isValidTime(time)
+	 */
+	public double distanceTraveledHorizontal(double velocity, double deltaT){
+		if (Math.abs(velocity) == this.getMaximumHorizontalVelocity())
+			return (velocity *deltaT);
+		if(velocity>0)
+			return (velocity * deltaT + 0.5 * this.getHorizontalAccelaration()*deltaT*deltaT);
+		return (velocity * deltaT + 0.5 * (-(this.getHorizontalAccelaration()*deltaT*deltaT)));
+	}
+	//TODO Wat te doen als velocity niet 8 is en niet negatief is?
+	public double distanceTraveledVertical(double velocity, double deltaT){
+		if (velocity == this.getInitialVerticalVelocity())
+			return (velocity *deltaT);
+		if(velocity<=0)
+			return (velocity * deltaT + 0.5 * this.getVerticalAccelaration()*deltaT*deltaT);
+		return 0;
+	}
+	
+	//TODO Moet dit totaal of deffensief geprogrammeerd worden?
 	public double advancedHorizontalVelocity(double velocity, double deltaT){
 		if(velocity>0)
 			return velocity + this.getHorizontalAccelaration()*deltaT;
@@ -471,6 +470,5 @@ public class Mazub {
 		return velocity + this.getVerticalAccelaration()*deltaT;
 	}
 	
-	private double time;
 
 }
