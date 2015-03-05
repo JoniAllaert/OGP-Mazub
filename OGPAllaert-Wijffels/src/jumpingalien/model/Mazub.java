@@ -46,7 +46,10 @@ public class Mazub {
 		this.setHorizontalVelocity(-(this.getInitialHorizontalVelocity()));
 		this.horizontalAccelaration = -this.getHorizontalAccelaration();
 		this.move = true;
+		this.timeStartLeft = this.time;
 	}
+	private double timeStartLeft;
+	
 	//Als we documentatie startMoveLeft aanpassen dan ook deze.
 	/**
 	 * Mazub starts moving horizontally to the right.
@@ -60,7 +63,9 @@ public class Mazub {
 		this.setHorizontalVelocity(this.getInitialHorizontalVelocity());
 		this.horizontalAccelaration = this.getHorizontalAccelaration();
 		this.move = true;
+		this.timeStartRight = this.time;
 	}
+	private double timeStartRight;
 	
 	/**
 	 * Mazub stops moving to the left.
@@ -70,7 +75,10 @@ public class Mazub {
 	public void endMoveLeft(){
 		this.setHorizontalVelocity(0);
 		this.move = false;
+		this.timeLastLeft = this.time;
 	}
+	private double timeLastLeft;
+	
 	/**
 	 * Mazub stops moving to the right.
 	 * @post Mazub's horizontal velocity equals v_x = 0 m/s.
@@ -79,8 +87,9 @@ public class Mazub {
 	public void endMoveRight(){
 		this.setHorizontalVelocity(0);
 		this.move = false;
+		this.timeLastRight = this.time;
 	}
-	
+	private double timeLastRight;
 	private boolean move;
 	
 	//total programming
@@ -146,9 +155,14 @@ public class Mazub {
 	 */
 	@Basic
 	public double getMaximumHorizontalVelocity(){
-		return 3;	
+		return maximumHorizontalVelocity;	
+	}
+	
+	public void setMaximumHorizontalVelocity(double velocity){
+		this.maximumHorizontalVelocity = velocity;
 	}
 		
+	private double maximumHorizontalVelocity = 3;
 	/**
 	 * A method that checks if the velocity is between minimal horizontal velocity 
 	 * and maximal horizontal velocity
@@ -251,8 +265,15 @@ public class Mazub {
 	 * 		 then images_7 is displayed.
 	 * 		 | if(this.startMoveRight == true) new.currentSprite = sprites[7]
 	 */
-	public void startDuck(){}
-	public void endDuck(){}
+	public void startDuck(){
+		this.setMaximumHorizontalVelocity(1);
+		this.duck = true;
+	}
+	public void endDuck(){
+		this.setMaximumHorizontalVelocity(3);
+		this.duck = false;
+	}
+	private boolean duck;
 	
 	/**
 	 * This method gives you the current sprite of the alien.
@@ -261,6 +282,36 @@ public class Mazub {
 	public Sprite getCurrentSprite(){
 		return this.currentSprite;
 	}
+	//TODO Nominaal?
+	public void setCurrentSprite(int numberSprite){
+		this.currentSprite = sprites[numberSprite];
+	}
+	
+	public int calculateSprite(){
+		if((this.move == false)&&(this.time > this.timeLastLeft+1)&&(this.time > this.timeLastRight+1)&&(this.duck == true)&&(this.jump == true))
+			return 1;
+		else if((this.move == false)&&(this.time > this.timeLastLeft+1)&&(this.time <= this.timeLastRight+1)&&(this.duck == false)&&(this.jump == true))
+			return 2;
+		else if((this.move == false)&&(this.time <= this.timeLastLeft+1)&&(this.time > this.timeLastRight+1)&&(this.duck == false)&&(this.jump == true))
+			return 3;
+		else if((this.move == true)&&(this.getHorizontalVelocity() > 0)&&(this.duck == false)&&(this.jump == true))
+			return 4;
+		else if((this.move == true)&&(this.getHorizontalVelocity() < 0)&&(this.duck == false)&&(this.jump == true))
+			return 5;
+		else if((((this.move == true)&&(this.getHorizontalVelocity() > 0))||((this.move == false)&&(this.time > this.timeLastRight+1)))&&(this.duck == true)&&(this.jump == false))
+			return 6;
+		else if((((this.move == true)&&(this.getHorizontalVelocity() < 0))||((this.move == false)&&(this.time > this.timeLastLeft+1)))&&(this.duck == true)&&(this.jump == false))
+			return 7;
+		else if((this.move == true)&&(this.getHorizontalVelocity() > 0)&&(this.duck == false)&&(this.jump == false)){
+			return 8 + (int)(((this.time-this.timeStartRight)/0.075)%(this.M+1));
+		}
+		else if((this.move == true)&&(this.getHorizontalVelocity() < 0)&&(this.duck == false)&&(this.jump == false))
+			return 9 + this.M + (int)(((this.time-this.timeStartLeft)/0.075)%(this.M+1));
+		
+		return 0;
+	}
+
+	private final int M = 10;
 	private Sprite[] sprites;
 	private Sprite currentSprite;
 	
@@ -419,6 +470,8 @@ public class Mazub {
 			if(horizontalVelocity>=this.getMaximumHorizontalVelocity())
 				horizontalVelocity = this.getMaximumHorizontalVelocity();
 		}
+		this.addTime(deltaT);
+		this.setCurrentSprite(this.calculateSprite());
 		if(this.move == true){
 			setPositionX((int)(this.getPositionX() + (distanceTraveledHorizontal(horizontalVelocity, deltaT))*100));
 			setHorizontalVelocity(advancedHorizontalVelocity(horizontalVelocity,deltaT));
@@ -469,6 +522,12 @@ public class Mazub {
 			return velocity;
 		return velocity + this.getVerticalAccelaration()*deltaT;
 	}
+	
+	public void addTime(double time){
+		this.time += time;
+	}
+	
+	private double time;
 	
 
 }
