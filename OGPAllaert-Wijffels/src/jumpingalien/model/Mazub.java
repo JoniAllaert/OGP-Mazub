@@ -1,7 +1,7 @@
 package jumpingalien.model;
 import jumpingalien.util.Sprite;
 import be.kuleuven.cs.som.annotate.Basic;
-//TODO is vliegen ok?
+//TODO is vliegen ok? NEE
 
 /**
  * A class for dealing with the aliens called Mazub.
@@ -32,7 +32,7 @@ public class Mazub {
 		this.sprites = sprites;
 		this.currentSprite = sprites[0];
 	}
-	
+	// Begin Anne
 	//total programming
 	/**
 	 * Mazub starts moving horizontally to the left.
@@ -198,9 +198,9 @@ public class Mazub {
 		return 0.9;
 	}
 	private double horizontalAccelaration=0;
-	
+	//einde Anne begin Joni
 	//defensive programming
-	//TODO Moet de velocity afnemen omwille van de zwaartekracht?
+	//TODO Moet de velocity afnemen omwille van de zwaartekracht? JA
 	public void startJump(){
 		this.jump = true;
 		setVerticalVelocity(this.getInitialVerticalVelocity());
@@ -274,7 +274,7 @@ public class Mazub {
 		this.duck = false;
 	}
 	private boolean duck;
-	
+	//METHODE van MAKEN 
 	/**
 	 * This method gives you the current sprite of the alien.
 	 * @return Returns the current sprite.
@@ -314,7 +314,7 @@ public class Mazub {
 	private final int M = 10;
 	private Sprite[] sprites;
 	private Sprite currentSprite;
-	
+	//einde Joni begin Anne
 	/**
 	 * Returns the x-coordinate of the position of Mazub.
 	 */
@@ -322,7 +322,7 @@ public class Mazub {
 		return this.positionX;
 	}
 	
-	//TODO beweegt het beeld mee met het poppetje, of steeds nieuwe beelden, is dit een goede oplossing?
+	//TODO beweegt het beeld mee met het poppetje, of steeds nieuwe beelden, is dit een goede oplossing? OK
 	//TODO total programming?
 	/**
 	 * Set the x-coordinate of the position of Mazub. 
@@ -378,7 +378,7 @@ public class Mazub {
 		return this.positionY;
 	}
 	
-	//TODO Moet ge zijn hoofd zien? (anders size eraf)
+	//TODO Moet ge zijn hoofd zien? (anders size eraf) NEE
 	/**
 	 * Set the y-coordinate of the position of Mazub. 
 	 *
@@ -436,7 +436,7 @@ public class Mazub {
 	public boolean isValidTime(double deltaT){
 		return((deltaT >=0)&&(deltaT <= 0.2));
 	}
-	
+	//einde Anne begin Joni
 	//defensive programming
 	/**
 	 * This method updates the position and horizontal velocity of Mazub.
@@ -485,7 +485,7 @@ public class Mazub {
 		
 	}
 	
-	//TODO Moet dit totaal of deffensief geprogrammeerd worden?
+	//TODO Moet dit totaal of deffensief geprogrammeerd worden? TOTAAL
 	/**
 	 * Calculates the distance traveled based on given velocity and time duration.
 	 * 
