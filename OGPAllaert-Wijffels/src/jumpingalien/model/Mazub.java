@@ -355,6 +355,7 @@ public class Mazub {
 	private boolean duck;
 	
 	//TODO Joni: Hoe nomniaal maken? array sprites mag niet  null zijn (misschien eerder invariant)
+	//TODO kijken naar duck, want volgens mij zit dat verkeerd om Anne.
 	/**
 	 * This method returns the current sprite of Mazub.
 	 * @post if Mazub is not moving horizontally, has not moved horizontally within the last
@@ -710,7 +711,5 @@ public class Mazub {
 	/**
 	 * A variable that keeps track of the time that has passed.
 	 */
-	private double time;
-	
-
+	private double time;	
 }
