@@ -136,7 +136,7 @@ public class Facade implements IFacade{
 	@Override
 	public double[] getAcceleration(Mazub alien) {
 		// TODO Auto-generated method stub
-		double[] array = {alien.getHorizontalAccelaration(), alien.getVerticalAccelaration()};
+		double[] array = {alien.getHorizontalAccelaration(), alien.VERTICAL_ACCELARATION};
 		return array;
 	}
 
