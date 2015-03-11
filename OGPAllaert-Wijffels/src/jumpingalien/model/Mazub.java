@@ -1,6 +1,7 @@
 package jumpingalien.model;
 import jumpingalien.util.Sprite;
 import be.kuleuven.cs.som.annotate.Basic;
+import be.kuleuven.cs.som.annotate.Immutable;
 
 
 /**
@@ -11,7 +12,7 @@ import be.kuleuven.cs.som.annotate.Basic;
  * @author   Anne Wijffels
  * @author   Joni Allaert
  */
-//TODO invars
+//TODO invars + @raw
 //TODO privates
 //TODO duckenn jumpen en lopen.
 public class Mazub {
@@ -33,9 +34,9 @@ public class Mazub {
 		this.positionY = pixelBottomY;
 		this.sprites = sprites;
 	}
-	// TODO :nominal programming?? Joni: Moet ge dan geen précondities hebben?
 	/**
 	 * Mazub starts moving horizontally to the left.
+	 * @pre		Mazub is not moving horizontally.		
 	 * @post 	Mazub starts accelerating with a specific horizontal acceleration to the left.
 	 * 		 	| new this.getHorizontalAccelaration = -this.getHorizontalAccelaration()
 	 * @effect 	Mazub starts moving with an initial horizontal velocity to the left (negative).
@@ -43,6 +44,7 @@ public class Mazub {
 	 * 
 	 */
 	public void startMoveLeft(){
+		assert !this.move;
 		this.setHorizontalVelocity(-(this.getInitialHorizontalVelocity()));
 		this.horizontalAccelaration = -this.getHorizontalAccelaration();
 		this.move = true;
@@ -52,10 +54,10 @@ public class Mazub {
 	 * Variable registering the time when Mazub starts moving to the left.
 	 */
 	private double timeStartLeft;
-	
-	//TODO nominal programming	
+		
 	/**
 	 * Mazub starts moving horizontally to the right.
+	 * @pre		Mazub is not moving horizontally.	
 	 * @post 	Mazub starts accelerating with a specific horizontal acceleration to the right.
 	 * 		 	| new this.getHorizontalAccelaration = this.getHorizontalAccelaration()
 	 * @effect	Mazub starts moving with an initial horizontal velocity to the right (positive).
@@ -63,6 +65,7 @@ public class Mazub {
 	 * 
 	 */
 	public void startMoveRight(){
+		assert !this.move;
 		this.setHorizontalVelocity(this.getInitialHorizontalVelocity());
 		this.horizontalAccelaration = this.getHorizontalAccelaration();
 		this.move = true;
@@ -74,13 +77,14 @@ public class Mazub {
 	 */
 	private double timeStartRight;
 	
-	//TODO: nominal programming	
 	/**
 	 * Mazub stops moving to the left.
+	 * @pre		Mazub is moving horizontally.
 	 * @effect 	Mazub's horizontal velocity equals 0 m/s.
 	 * 			| setHorizontalVelocity(0)
 	 */
 	public void endMoveLeft(){
+		assert this.move;
 		this.setHorizontalVelocity(0);
 		this.move = false;
 		this.timeLastLeft = this.time;
@@ -91,13 +95,14 @@ public class Mazub {
 	 */
 	private double timeLastLeft;
 	
-	//TODO: nominal programming
 	/**
 	 * Mazub stops moving to the right.
+	 * @pre		Mazub is moving horizontally.
 	 * @effect  Mazub's horizontal velocity equals 0 m/s.
 	 * 			| setHorizontalVelocity(0)
 	 */
 	public void endMoveRight(){
+		assert this.move;
 		this.setHorizontalVelocity(0);
 		this.move = false;
 		this.timeLastRight = this.time;
@@ -168,7 +173,7 @@ public class Mazub {
 	 *         new Mazubs and this does not break the contract with the
 	 *         clients.
 	 */
-	@Basic
+	@Basic @Immutable
 	public static double getInitialHorizontalVelocity(){
 		return 1;
 	}
@@ -186,7 +191,7 @@ public class Mazub {
 	 *         new Mazubs and this does not break the contract with the
 	 *         clients.
 	 */
-	@Basic
+	@Basic 
 	public double getMaximumHorizontalVelocity(){
 		return maximumHorizontalVelocity;	
 	}
@@ -247,7 +252,7 @@ public class Mazub {
 	 *         	new Mazubs and this does not break the contract with the
 	 *         	clients.
 	 */
-	@Basic
+	@Basic @Immutable
 	public static double getHorizontalAccelaration(){
 		return 0.9;
 	}
@@ -257,7 +262,7 @@ public class Mazub {
 	 */
 	private double horizontalAccelaration=0;
 	
-	//defensive programming
+	//TODO moet die extra voorwaarde een preconditie zijn? en Moet daar een formele versie van zijn.
 	/**
 	 * Mazub starts jumping.
 	 * This methods prevents jumping when Mazub is not on the bottom of the screen.
@@ -274,17 +279,15 @@ public class Mazub {
 		}
 		this.jump = true;
 		setVerticalVelocity(Mazub.INITIAL_VERTICAL_VELOCITY);
-//TODO
 	}
+	
 	/**
 	 * Mazub stops jumping.
+	 * This methode prevents Mazub to stop jumping, when he is falling.
 	 * @effect 	Mazub's vertical velocity equals 0 m/s.
 	 * 			| setVerticalVelocity(0)
-	 * @throws 	IllegalStateException
-	 * 			The current velocity is smaller than zero.
-	 * 			|this.getVerticalVelocity() <= 0
 	 */
-	public void endJump() throws IllegalStateException{
+	public void endJump(){
 		try{
 			if(this.getVerticalVelocity() <= 0)
 				throw new IllegalStateException();
@@ -329,14 +332,21 @@ public class Mazub {
 	 * Variable registering the vertical accelaration.
 	 */
 	public static final double VERTICAL_ACCELARATION=-10;
-	
-	//TODO Hoe maak ik dit defensief? 
+	//TODO hij duckt nog altijd
 	/**
 	 * Mazub starts ducking to decrease his size.
+	 * This method prevents Mazub to duck, when he is jumping.
 	 * @effect 	Mazub moves at a maximum velocity of 1m/s.
 	 * 			|setMaximumHorizontalVelocity(1)
 	 */
 	public void startDuck(){
+		try{
+			if(this.jump == true)
+				throw new IllegalStateException();
+		}
+		catch(IllegalStateException exc){
+			return;
+		}
 		this.setMaximumHorizontalVelocity(1);
 		this.duck = true;
 	}
@@ -344,8 +354,13 @@ public class Mazub {
 	 * Mazubs stops ducking and increases his size to the normal size
 	 * @effect 	Mazub moves at a maximum velocity of 3m/s.
 	 * 			|setMaximumHorizontalVelocity(3)
+	 * @throws	IllegalStateException
+	 * 			When Mazub is not ducking.
+	 * 			|this.duck == false
 	 */
-	public void endDuck(){
+	public void endDuck() throws IllegalStateException{
+		if(this.duck == false)
+			throw new IllegalStateException();
 		this.setMaximumHorizontalVelocity(3);
 		this.duck = false;
 	}
@@ -387,15 +402,13 @@ public class Mazub {
 			return this.sprites[2];
 		else if((this.move == false)&&(this.time <= this.timeLastLeft+1)&&(this.time > this.timeLastRight+1)&&(this.duck == false)&&(this.jump == true))
 			return this.sprites[3];
-		else if((this.move == true)&&(this.getHorizontalVelocity() > 0)&&(this.jump == true))
-			//else if((this.move == true)&&(this.getHorizontalVelocity() > 0)&&(this.duck == false)&&(this.jump == true))
+		else if((this.move == true)&&(this.getHorizontalVelocity() > 0)&&(this.duck == false)&&(this.jump == true))
 			return this.sprites[4];
-		else if((this.move == true)&&(this.getHorizontalVelocity() < 0)&&(this.jump == true))
-			//else if((this.move == true)&&(this.getHorizontalVelocity() < 0)&&(this.duck == false)&&(this.jump == true))
+		else if((this.move == true)&&(this.getHorizontalVelocity() < 0)&&(this.duck == false)&&(this.jump == true))
 			return this.sprites[5];
-		else if((((this.move == true)&&(this.getHorizontalVelocity() > 0))||((this.move == false)&&(this.time > this.timeLastRight+1)))&&(this.duck == true)&&(this.jump == false))
+		else if((((this.move == true)&&(this.getHorizontalVelocity() > 0))||((this.move == false)&&(this.time <= this.timeLastRight+1)))&&(this.duck == true))
 			return this.sprites[6];
-		else if((((this.move == true)&&(this.getHorizontalVelocity() < 0))||((this.move == false)&&(this.time > this.timeLastLeft+1)))&&(this.duck == true)&&(this.jump == false))
+		else if((((this.move == true)&&(this.getHorizontalVelocity() < 0))||((this.move == false)&&(this.time <= this.timeLastLeft+1)))&&(this.duck == true))
 			return this.sprites[7];
 		else if((this.move == true)&&(this.getHorizontalVelocity() > 0)&&(this.duck == false)&&(this.jump == false))
 			return this.sprites[8 + (int)(((this.time-this.timeStartRight)/0.075)%(this.M+1))];
@@ -428,6 +441,7 @@ public class Mazub {
 	/**
 	 * Returns the x-coordinate of the position of Mazub.
 	 */
+	@Basic
 	public int getPositionX(){
 		return this.positionX;
 	}
@@ -501,6 +515,7 @@ public class Mazub {
 	/**
 	 * Returns the y-coordinate of the position of Mazub.
 	 */
+	@Basic
 	public int getPositionY(){
 		return this.positionY;
 	}
