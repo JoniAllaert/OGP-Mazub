@@ -114,7 +114,12 @@ public class Mazub {
 	 * Variable registering when Mazub stops moving to the right. 
 	 */
 	private double timeLastRight=-2;
-
+	/**
+	 * This method gives you the current state of the boolean variable move.
+	 */
+	public boolean getMove(){
+		return this.move;
+	}
 	/**
 	 * Variable registering if Mazub is moving (true) or is not moving (false).
 	 */
@@ -302,6 +307,12 @@ public class Mazub {
 
 	}
 	/**
+	 * This method gives you the current state of the boolean variable jump.
+	 */
+	public boolean getJump(){
+		return this.jump;
+	}
+	/**
 	 * Variable registering if Mazub is jumping (true) or is not jumping (false).
 	 */
 	private boolean jump;
@@ -372,9 +383,11 @@ public class Mazub {
 		this.setMaximumHorizontalVelocity(3);
 		this.duck = false;
 	}
-	
+	/**
+	 * This method gives you the current state of the boolean variable duck.
+	 */
 	public boolean getDuck(){
-		return duck;
+		return this.duck;
 	}
 	/**
 	 * Variable registering if Mazub is ducking (true) or is not ducking (false).

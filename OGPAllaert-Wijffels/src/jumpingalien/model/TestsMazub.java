@@ -43,6 +43,7 @@ public class TestsMazub {
 		alien_0_0_sprites1.startMoveLeft();
 		Util.fuzzyEquals(alien_0_0_sprites1.getHorizontalVelocity(),-1);
 		Util.fuzzyEquals(-0.9, alien_0_0_sprites1.getHorizontalAccelaration());
+		assertTrue(alien_0_0_sprites1.getMove());
 //		assertEquals(sprites1[19], alien_0_0_sprites1.getCurrentSprite());
 	}
 	@Test
@@ -50,18 +51,21 @@ public class TestsMazub {
 		alien_0_0_sprites1.startMoveRight();
 		Util.fuzzyEquals(alien_0_0_sprites1.getHorizontalVelocity(),1);
 		Util.fuzzyEquals(0.9, alien_0_0_sprites1.getHorizontalAccelaration());
+		assertTrue(alien_0_0_sprites1.getMove());
 //		assertEquals(sprites1[8], alien_0_0_sprites1.getCurrentSprite());
 	}
 	@Test
 	public void endMoveRight_SingleCase(){
 		alien_0_0_sprites1.endMoveRight();
 		Util.fuzzyEquals(0, alien_0_0_sprites1.getHorizontalVelocity());
+		assertFalse(alien_0_0_sprites1.getMove());
 //		assertEquals(sprites1[0], alien_0_0_sprites1.getCurrentSprite());
 	}
 	@Test
 	public void endMoveLeft_SingleCase(){
 		alien_0_0_sprites1.endMoveRight();
 		Util.fuzzyEquals(0, alien_0_0_sprites1.getHorizontalVelocity());
+		assertFalse(alien_0_0_sprites1.getMove());
 //		assertEquals(sprites1[0], alien_0_0_sprites1.getCurrentSprite());
 	}
 	
@@ -113,6 +117,7 @@ public class TestsMazub {
 	public void startJump_SingleCase(){
 		alien_0_0_sprites1.startJump();
 		Util.fuzzyEquals(8,alien_0_0_sprites1.getVerticalVelocity());
+		assertTrue(alien_0_0_sprites1.getJump());
 //		assertEquals(sprites1[0], alien_0_0_sprites1.getCurrentSprite());
 	}
 	
@@ -128,6 +133,7 @@ public class TestsMazub {
 	public void startDuck_SingleCase(){
 		alien_0_0_sprites1.startDuck();
 		Util.fuzzyEquals(1,alien_0_0_sprites1.getMaximumHorizontalVelocity());
+		assertTrue(alien_0_0_sprites1.getDuck());
 //		assertEquals(sprites1[1], alien_0_0_sprites1.getCurrentSprite());
 	}
 	
@@ -135,6 +141,7 @@ public class TestsMazub {
 	public void endDuck_SingleCase(){
 		alien_0_0_sprites1.endDuck();
 		Util.fuzzyEquals(3,alien_0_0_sprites1.getMaximumHorizontalVelocity());
+		assertFalse(alien_0_0_sprites1.getDuck());
 //		assertEquals(sprites1[0], alien_0_0_sprites1.getCurrentSprite());
 		
 	}
