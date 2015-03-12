@@ -1,6 +1,7 @@
 package jumpingalien.part1.facade;
 
 import jumpingalien.model.Mazub;
+import jumpingalien.util.ModelException;
 import jumpingalien.util.Sprite;
 
 /**
@@ -256,7 +257,12 @@ public class Facade implements IFacade{
 	@Override
 	public void startDuck(Mazub alien) {
 		// TODO Auto-generated method stub
-		alien.startDuck();
+		try{
+			alien.startDuck();
+		}
+		catch(IllegalStateException exc){
+			throw new ModelException("lkj");		
+		}
 		
 	}
 

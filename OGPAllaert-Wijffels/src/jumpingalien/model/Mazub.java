@@ -355,14 +355,9 @@ public class Mazub {
 	 * @effect 	Mazub moves at a maximum velocity of 1m/s.
 	 * 			|setMaximumHorizontalVelocity(1)
 	 */
-	public void startDuck(){
-		try{
+	public void startDuck()throws IllegalStateException{
 			if(this.jump == true)
 				throw new IllegalStateException();
-		}
-		catch(IllegalStateException exc){
-			return;
-		}
 		this.setMaximumHorizontalVelocity(1);
 		this.duck = true;
 	}
@@ -420,8 +415,6 @@ public class Mazub {
 	 * @return
 	 */
 	public Sprite getCurrentSprite(){
-
-
 		if((this.move == false)&&(this.time > this.timeLastLeft+1)&&(this.time <= this.timeLastRight+1)&&(this.duck == false))
 			return this.sprites[2];
 		else if((this.move == false)&&(this.time <= this.timeLastLeft+1)&&(this.time > this.timeLastRight+1)&&(this.duck == false))
