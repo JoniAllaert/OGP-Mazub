@@ -479,7 +479,7 @@ public class TestsMazub {
 	}
 
 	@Test
-	public void advanceTime_TrueMoveFalseJumpLegalHorizontalVelocity(){
+	public void advanceTime_TrueMoveFalseJumpLegalHorizontalVelocity1(){
 		alien_0_0_sprites1.startMoveRight();
 		alien_0_0_sprites1.advanceTime(2,-10,0.1);
 		Util.fuzzyEquals(0.1, alien_0_0_sprites1.getTime());
@@ -488,9 +488,22 @@ public class TestsMazub {
 		assertEquals(20, alien_0_0_sprites1.getPositionX());
 		assertEquals(0, alien_0_0_sprites1.getPositionY());
 	}
+	
+	@Test
+	public void advanceTime_TrueMoveFalseJumpLegalHorizontalVelocity2(){
+		alien_0_0_sprites1.startMoveRight();
+		for(int i = 1 ; i<=20 ; i++){
+		alien_0_0_sprites1.advanceTime(3,-10,0.2);
+		}
+		Util.fuzzyEquals(0.1, alien_0_0_sprites1.getTime());
+		Util.fuzzyEquals(3, alien_0_0_sprites1.getHorizontalVelocity());
+		Util.fuzzyEquals(0, alien_0_0_sprites1.getVerticalVelocity());
+		assertEquals(176, alien_0_0_sprites1.getPositionX());
+		assertEquals(0, alien_0_0_sprites1.getPositionY());
+	}
 
 	@Test
-	public void advanceTime_FalseMoveTrueJump(){
+	public void advanceTime_FalseMoveTrueJump1(){
 		alien_0_0_sprites1.startJump();
 		alien_0_0_sprites1.advanceTime(2, 2, 0.1);
 		Util.fuzzyEquals(0.1, alien_0_0_sprites1.getTime());
@@ -499,6 +512,30 @@ public class TestsMazub {
 		assertEquals(0, alien_0_0_sprites1.getPositionX());
 		assertEquals(15, alien_0_0_sprites1.getPositionY());
 	}
+	
+	@Test
+	public void advanceTime_FalseMoveTrueJump2(){
+		alien_0_0_sprites1.startJump();
+		alien_0_0_sprites1.advanceTime(2, -10, 0.1);
+		Util.fuzzyEquals(0.1, alien_0_0_sprites1.getTime());
+		Util.fuzzyEquals(0, alien_0_0_sprites1.getHorizontalVelocity());
+		Util.fuzzyEquals(-11, alien_0_0_sprites1.getVerticalVelocity());
+		assertEquals(0, alien_0_0_sprites1.getPositionX());
+		assertEquals(0, alien_0_0_sprites1.getPositionY());
+		assertFalse(alien_0_0_sprites1.getJump());
+	}
+	
+	@Test
+	public void advanceTime_FalseMoveTrueJump3(){
+		alien_0_0_sprites1.startJump();
+		alien_0_0_sprites1.advanceTime(2, 100, 0.1);
+		Util.fuzzyEquals(0.1, alien_0_0_sprites1.getTime());
+		Util.fuzzyEquals(0, alien_0_0_sprites1.getHorizontalVelocity());
+		Util.fuzzyEquals(99, alien_0_0_sprites1.getVerticalVelocity());
+		assertEquals(0, alien_0_0_sprites1.getPositionX());
+		assertEquals(767, alien_0_0_sprites1.getPositionY());
+	}
+
 
 	@Test
 	public void advanceTime_TrueMoveTrueJump(){
