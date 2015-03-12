@@ -2,6 +2,7 @@ package jumpingalien.model;
 import jumpingalien.util.Sprite;
 import be.kuleuven.cs.som.annotate.Basic;
 import be.kuleuven.cs.som.annotate.Immutable;
+import be.kuleuven.cs.som.annotate.Raw;
 
 
 /**
@@ -20,6 +21,7 @@ import be.kuleuven.cs.som.annotate.Immutable;
  * @author   Anne Wijffels
  * @author   Joni Allaert
  */
+
 //TODO @raw
 //TODO duckenn jumpen en lopen. links niet rechts wel juist
 public class Mazub {
@@ -41,6 +43,7 @@ public class Mazub {
 		this.positionY = pixelBottomY;
 		this.sprites = sprites;
 	}
+
 	/**
 	 * Mazub starts moving horizontally to the left.
 	 * @pre		Mazub is not moving horizontally to the left.		
@@ -53,10 +56,11 @@ public class Mazub {
 	public void startMoveLeft(){
 		assert (!this.getMove()) && (this.getHorizontalVelocity() <= 0);
 		this.setHorizontalVelocity(-this.getInitialHorizontalVelocity());
-		this.horizontalAccelaration = -this.getHorizontalAccelaration();
+		this.setHorizontalAccelaration(-this.getHorizontalAccelaration());
 		this.setMove(true);
 		this.setTimeStartLeft(this.getTime());
 	}
+
 	/**
 	 * 
 	 * This method gives you the time when Mazub last started moving left.
@@ -66,6 +70,7 @@ public class Mazub {
 	public double getTimeStartLeft(){
 		return this.timeStartLeft;
 	}
+
 	/**
 	 * Sets the time when Mazub last started moving to the left.
 	 * @param time
@@ -76,6 +81,7 @@ public class Mazub {
 	private void setTimeStartLeft(double time){
 		this.timeStartLeft = time;
 	}
+
 	/**
 	 * Variable registering the time when Mazub starts moving to the left.
 	 */
@@ -93,10 +99,11 @@ public class Mazub {
 	public void startMoveRight(){
 		assert (!this.getMove()) && (this.getHorizontalVelocity() >= 0);
 		this.setHorizontalVelocity(this.getInitialHorizontalVelocity());
-		this.horizontalAccelaration = this.getHorizontalAccelaration();
+		this.setHorizontalAccelaration(this.getHorizontalAccelaration());
 		this.setMove(true);
 		this.setTimeStartRight(this.getTime());
 	}
+
 	/**
 	 * 
 	 * This method gives you the time when Mazub last started moving right.
@@ -106,6 +113,7 @@ public class Mazub {
 	public double getTimeStartRight(){
 		return this.timeStartRight;
 	}
+
 	/**
 	 * Sets the time when Mazub last started moving to the right.
 	 * @param time
@@ -135,6 +143,7 @@ public class Mazub {
 		this.setMove(false);
 		this.setTimeLastLeft(this.getTime());
 	}
+
 	/**
 	 * 
 	 * This method gives you the time when Mazub last finished moving left.
@@ -144,6 +153,7 @@ public class Mazub {
 	public double getTimeLastLeft(){
 		return this.timeLastLeft;
 	}
+
 	/**
 	 * Sets the time when Mazub last stops moving to the left.
 	 * @param time
@@ -154,6 +164,7 @@ public class Mazub {
 	private void setTimeLastLeft(double time){
 		this.timeLastLeft = time;
 	}
+
 	/**
 	 * Variable registering when Mazub stops moving to the left. 
 	 * Initialized to -2 because initially the last time Mazub moved to the left was never.
@@ -172,15 +183,15 @@ public class Mazub {
 		this.setMove(false);
 		this.setTimeLastRight(this.getTime());
 	}
+
 	/**
-	 * 
 	 * This method gives you the time when Mazub last finished moving right.
-	 * 
 	 */
 	@Basic
 	public double getTimeLastRight(){
 		return this.timeLastRight;
 	}
+
 	/**
 	 * Sets the time when Mazub last stops moving to the right.
 	 * @param time
@@ -191,16 +202,20 @@ public class Mazub {
 	private void setTimeLastRight(double time){
 		this.timeLastRight = time;
 	}
+
 	/**
 	 * Variable registering when Mazub stops moving to the right. 
+	 * Initialized to -2 because initially the last time Mazub moved to the left was never.
 	 */
 	private double timeLastRight=-2;
+
 	/**
 	 * This method gives you the current state of the boolean variable move.
 	 */
 	public boolean getMove(){
 		return this.move;
 	}
+
 	/**
 	 * Sets the boolean that registers if Mazub is moving.
 	 * @param flag
@@ -211,6 +226,7 @@ public class Mazub {
 	private void setMove(boolean flag){
 		this.move = flag;
 	}
+
 	/**
 	 * Variable registering if Mazub is moving (true) or is not moving (false).
 	 */
@@ -273,8 +289,14 @@ public class Mazub {
 	 */
 	@Basic @Immutable
 	public double getInitialHorizontalVelocity(){
-		return 1;
+		return this.INITIAL_HORIZONTAL_VELOCITY;
 	}
+
+
+	/**
+	 * This variable registers the initial horizontal velocity.
+	 */
+	private final double INITIAL_HORIZONTAL_VELOCITY=1;
 
 	/**
 	 * Return the maximal value for the horizontal velocity of Mazub.
@@ -293,6 +315,7 @@ public class Mazub {
 	public double getMaximumHorizontalVelocity(){
 		return maximumHorizontalVelocity;	
 	}
+
 	//TODO Private because we do not want others to be able to change the maximum horizontal velocity.
 	/**
 	 * Set the maximum horizontal velocity of Mazub.
@@ -336,7 +359,7 @@ public class Mazub {
 	 */
 	private double horizontalVelocity=0;
 
-	//TODO ik denk dat dit een statiche methode moet zijn. Joni: ik denk dat ge gelijk hebt of final? die assistent had daar iets over gezegd.
+	//TODO is het nu final variable geworden?
 	/**
 	 * Return the value for the horizontal acceleration of Mazub.
 	 * 
@@ -351,14 +374,26 @@ public class Mazub {
 	 *         	clients.
 	 */
 	@Basic @Immutable
-	public static double getHorizontalAccelaration(){
-		return 0.9;
+	public double getHorizontalAccelaration(){
+		return horizontalAccelaration;
+	}
+
+	//TODO: ik denk dat we deze nodig hebben, maar daardoor kunnen we horizontal accelaration niet final maken.
+	/**
+	 * Sets the horizontal accelaration of Mazub.
+	 * @param accelaration
+	 * 			The new horizontal accelaration.
+	 * @post	The new horizontal accelaration of mazub is equal to the given one.
+	 * 			| new this.getHorizontalAccelaration() = accelaration
+	 */
+	private void setHorizontalAccelaration(double accelaration){
+		this.horizontalAccelaration= accelaration;
 	}
 
 	/**
 	 * Variable registering the horizontal acceleration.
 	 */
-	private double horizontalAccelaration=0;
+	private double horizontalAccelaration=0.9;
 
 	//TODO moet die extra voorwaarde een preconditie zijn? en Moet daar een formele versie van zijn.
 	/**
@@ -366,18 +401,18 @@ public class Mazub {
 	 * This methods prevents jumping when Mazub is not on the bottom of the screen.
 	 * @post 	Mazub starts moving upwards (vertically) with a specific vertical velocity.
 	 * 		 	| new this.getVerticalVelocity() = this.INITIAL_VERTICAL_VELOCITY
+	 * @throws	IllegalStateException
+	 * 			Mazub can not jump while jumping, nor jump while ducking.
+	 * 			| this.getJump()||this.getDuck()
 	 */
-	public void startJump(){
-		try{
-			if(this.getPositionY() !=0)
-				throw new IllegalStateException();
-		}
-		catch(IllegalStateException exc){
-			return;
-		}
-		this.endDuck();
-		this.jump = true;
-		setVerticalVelocity(this.INITIAL_VERTICAL_VELOCITY);
+	public void startJump()throws IllegalStateException{
+		//if(this.getPositionY() != 0)
+		if(this.getJump() || this.getDuck())
+			throw new IllegalStateException();
+		//	return;
+		//this.endDuck();
+		this.setJump(true);
+		setVerticalVelocity(this.getInitialVerticalVelocity());
 	}
 
 	/**
@@ -385,28 +420,39 @@ public class Mazub {
 	 * This methode prevents Mazub to stop jumping, when he is falling.
 	 * @effect 	Mazub's vertical velocity equals 0 m/s.
 	 * 			| setVerticalVelocity(0)
+	 * @throws
 	 */
-	public void endJump(){
-		try{
-			if(this.getVerticalVelocity() <= 0)
-				throw new IllegalStateException();
-		}
-		catch(IllegalStateException exc){
-			return;
-		}
+	public void endJump()throws IllegalStateException{
+		if(this.getVerticalVelocity() < 0)
+			throw new IllegalStateException();
 		setVerticalVelocity(0);
 
 	}
+
 	/**
 	 * This method gives you the current state of the boolean variable jump.
 	 */
+	@Basic
 	public boolean getJump(){
 		return this.jump;
 	}
+
+	/**
+	 * Sets the boolean that registers if Mazub is jumping.
+	 * @param flag
+	 * 			The new state.
+	 * @post	The new state variable that registers if Mazub is jumping.
+	 * 			| new this.getJump() = flag
+	 */
+	private void setJump(boolean flag){
+		this.jump = flag;
+	}
+
 	/**
 	 * Variable registering if Mazub is jumping (true) or is not jumping (false).
 	 */
 	private boolean jump;
+
 	/**
 	 * This method gives you the current vertical velocity of Mazub.
 	 */
@@ -414,7 +460,9 @@ public class Mazub {
 	public double getVerticalVelocity(){
 		return this.verticalVelocity;
 	}
+
 	//TODO Private because we do not want others to be able to change the vertical velocity.
+	//TODO ook @Raw
 	/**
 	 * Set the Vertical velocity of Mazub to a given velocity.
 	 * @param velocity
@@ -422,8 +470,8 @@ public class Mazub {
 	 * @post	The new velocity is equal to the given velocity.
 	 * 			| new.getVerticalVelocity() = velocity
 	 */
-	private void setVerticalVelocity(double velocity){
-
+	@Raw
+	private void setVerticalVelocity(@Raw double velocity){
 		this.verticalVelocity = velocity;
 	}
 
@@ -431,10 +479,36 @@ public class Mazub {
 	 * Variable registering the vertical velocity.
 	 */
 	private double verticalVelocity=0;
+
+	//TODO mogen we hier wel 8 vermelden?
+	//TODO: hier heb ik geen this. want het is een statische variable.
+	/**
+	 * Gives the initial vertical velocity of Mazub.
+	 * 
+	 * @return The initial value for the vertical velocity of Mazub 
+	 * 		   is equal to 8  m/s.
+	 *         | result = 8
+	 */
+	@Basic @Immutable
+	public double getInitialVerticalVelocity(){
+		return INITIAL_VERTICAL_VELOCITY;
+	}
+
 	/**
 	 * Variable registering the initial vertical velocity.
 	 */
-	private static final double INITIAL_VERTICAL_VELOCITY=8;
+	private static final double INITIAL_VERTICAL_VELOCITY = 8;
+
+	/**
+	 * Gives the vertical accelaration of Mazub.
+	 * 
+	 * @return The value for the vertical accelaration of Mazub is equal to -10 m/s^2.
+	 *         | result = -10
+	 */
+	@Basic @Immutable
+	public double getVerticalAccelaration(){
+		return VERTICAL_ACCELARATION;
+	}
 	/**
 	 * Variable registering the vertical accelaration.
 	 */
@@ -447,11 +521,12 @@ public class Mazub {
 	 * 			|setMaximumHorizontalVelocity(1)
 	 */
 	public void startDuck()throws IllegalStateException{
-			if(this.jump == true)
-				throw new IllegalStateException();
+		if(this.getJump() == true)
+			throw new IllegalStateException();
 		this.setMaximumHorizontalVelocity(1);
-		this.duck = true;
+		this.setDuck(true);
 	}
+
 	/**
 	 * Mazubs stops ducking and increases his size to the normal size
 	 * This method prevents that Mazub stops ducking, when he is not ducking.
@@ -459,22 +534,31 @@ public class Mazub {
 	 * 			|setMaximumHorizontalVelocity(3)
 	 */
 	public void endDuck() throws IllegalStateException{
-		try {
-			if(this.duck == false)
-				throw new IllegalStateException();
-		}
-		catch(IllegalStateException exc){
-			return;
-		}
+		//if(this.getDuck() == false)
+		//	throw new IllegalStateException();
 		this.setMaximumHorizontalVelocity(3);
-		this.duck = false;
+		this.setDuck(false);
 	}
+
 	/**
 	 * This method gives you the current state of the boolean variable duck.
 	 */
+	@Basic
 	public boolean getDuck(){
 		return this.duck;
 	}
+
+	/**
+	 * Sets the boolean that registers if Mazub is ducking.
+	 * @param flag
+	 * 			The new state.
+	 * @post	The new state variable that registers if Mazub is ducking.
+	 * 			| new this.getDuck() = flag
+	 */
+	private void setDuck(boolean flag){
+		this.duck = flag;
+	}
+
 	/**
 	 * Variable registering if Mazub is ducking (true) or is not ducking (false).
 	 */
@@ -506,47 +590,76 @@ public class Mazub {
 	 * @return
 	 */
 	public Sprite getCurrentSprite(){
-		if((this.move == false)&&(this.time > this.timeLastLeft+1)&&(this.time <= this.timeLastRight+1)&&(this.duck == false))
+		if((this.getMove() == false)&&(this.getTime() > this.getTimeLastLeft()+1)&&
+				(this.getTime() <= this.getTimeLastRight()+1)&&(this.getDuck() == false))
 			return this.sprites[2];
-		else if((this.move == false)&&(this.time <= this.timeLastLeft+1)&&(this.time > this.timeLastRight+1)&&(this.duck == false))
+		else if((this.getMove() == false)&&(this.getTime() <= this.getTimeLastLeft()+1)&&
+				(this.getTime() > this.getTimeLastRight()+1)&&(this.getDuck() == false))
 			return this.sprites[3];
-		else if((this.move == true)&&(this.getHorizontalVelocity() > 0)&&(this.duck == false)&&(this.jump == true))
+		else if((this.getMove() == true)&&(this.getHorizontalVelocity() > 0)&&
+				(this.getDuck() == false)&&(this.getJump() == true))
 			return this.sprites[4];
-		else if((this.move == true)&&(this.getHorizontalVelocity() < 0)&&(this.duck == false)&&(this.jump == true))
+		else if((this.getMove() == true)&&(this.getHorizontalVelocity() < 0)&&
+				(this.getDuck() == false)&&(this.getJump() == true))
 			return this.sprites[5];
-		else if((((this.move == true)&&(this.getHorizontalVelocity() > 0))||((this.move == false)&&(this.time <= this.timeLastRight+1)))&&(this.duck == true))
+		else if((((this.getMove() == true)&&(this.getHorizontalVelocity() > 0))||
+				((this.getMove() == false)&&(this.getTime() <= this.getTimeLastRight()+1)))&&
+				(this.getDuck() == true))
 			return this.sprites[6];
-		else if((((this.move == true)&&(this.getHorizontalVelocity() < 0))||((this.move == false)&&(this.time <= this.timeLastLeft+1)))&&(this.duck == true))
+		else if((((this.getMove() == true)&&(this.getHorizontalVelocity() < 0))||
+				((this.getMove() == false)&&(this.getTime() <= this.getTimeLastLeft()+1)))&&
+				(this.getDuck() == true))
 			return this.sprites[7];
-		else if((this.move == true)&&(this.getHorizontalVelocity() > 0)&&(this.duck == false)&&(this.jump == false))
-			return this.sprites[8 + (int)(((this.time-this.timeStartRight)/0.075)%(this.M+1))];
-		else if((this.move == true)&&(this.getHorizontalVelocity() < 0)&&(this.duck == false)&&(this.jump == false))
-			return this.sprites[9 + this.M + (int)(((this.time-this.timeStartLeft)/0.075)%(this.M+1))];
-		else if((this.move == false)&&(this.duck == true)&&(this.jump == false))
+		else if((this.getMove() == true)&&(this.getHorizontalVelocity() > 0)&&
+				(this.getDuck() == false)&&(this.getJump() == false))
+			return this.sprites[8 + (int)(((this.getTime()-this.getTimeStartRight())/0.075)%(this.M+1))];
+		else if((this.getMove() == true)&&(this.getHorizontalVelocity() < 0)&&
+				(this.getDuck() == false)&&(this.getJump() == false))
+			return this.sprites[9 + this.M + 
+			                    (int)(((this.getTime()-this.getTimeStartLeft())/0.075)%(this.M+1))];
+		else if((this.getMove() == false)&&(this.getDuck() == true)&&(this.getJump() == false))
 			return this.sprites[1];
 		return this.sprites[0];
 	}
+
+	//TODO: hebben we deze ook nodig? of deze gewoon met this.M houden?
+//	/**
+//	 * This method gives you the number of images to display a walking Mazub.
+//	 */
+//	public int getM(){
+//		return this.M;
+//	}
+
 	/**
 	 * Variable that determines the number of images to display a walking Mazub.
 	 */
 	private final int M = 10;
+
 	/**
 	 * Array of all the images to display Mazub
 	 */
 	private Sprite[] sprites;
 
 
-	/*TODO we moeten volgens mij nog een methode hebben om de grootte van Mazub op te vragen.
-	 * Joni: Waar zouden we die gebruiken?
-	 * zou ook defensief geprogrammeerd moeten worden.
-	 * 
-	 * public int sizeX(){
-	 * 		this.getCurrentSprite().getWeight()
-	 * }
-	 * public int sizeY() {
-	 * 		this.getCurrentSprite().getHeight()
-	 * }
+	//	TODO we moeten volgens mij nog een methode hebben om de grootte van Mazub op te vragen.
+	//	 Joni: Waar zouden we die gebruiken?
+	//	 zou ook defensief geprogrammeerd moeten worden.
+	//   zijn dit @Basic's ?
+
+	/**
+	 * This method gives the width of the current sprite of Mazub.
 	 */
+	public int getSizeX(){
+		return this.getCurrentSprite().getWidth();
+	}
+	
+	/**
+	 * This method gives the height of the current sprite of Mazub.
+	 */
+	public int getSizeY() {
+		return this.getCurrentSprite().getHeight();
+	}
+
 
 	/**
 	 * Returns the x-coordinate of the position of Mazub.
@@ -555,6 +668,7 @@ public class Mazub {
 	public int getPositionX(){
 		return this.positionX;
 	}
+	
 	//TODO Private because we do not want others to be able to change the x-coordinate of Mazub.
 	/**
 	 * Set the x-coordinate of the position of Mazub. 
@@ -563,28 +677,29 @@ public class Mazub {
 	 *			The new x-position of Mazub.
 	 * @post    If the given position is in the range established by the minimum
 	 *          and maximum position of Mazub, the x-coordinate of mazub is equal to position. 
-	 *        	| if ( (position >= MIN_POSITIONX) && (position <= MAX_POSITIONX) )
+	 *        	| if ( (position >= this.MIN_POSITIONX) && (position <= this.MAX_POSITIONX) )
 	 *        	| 	new this.getPositionX() == position
 	 * @post    If the given position is in the range established by the minus of the
 	 *          maximum position and the minimum position of Mazub, the x-coordinate of mazub is equal to position
 	 *          plus the maximum position + 1. 
-	 *        	| if((position >= -MAX_POSITIONX-1)&&(position < MIN_POSITIONX))
-	 * 			| position += MAX_POSITIONX+1;
+	 *        	| if((position >= -this.MAX_POSITIONX-1)&&(position < this.MIN_POSITIONX))
+	 * 			| position += this.MAX_POSITIONX+1;
 	 * @post    If the given position is in the range established by the maximum position
 	 *          and two times the maximum position +1 of Mazub, the x-coordinate of mazub is equal to position
 	 *          minus the maximum position + 1.
-	 *        	| if((position > MAX_POSITIONX)&&(position <= 2*MAX_POSITIONX+1))
-	 * 			| position -= MAX_POSITIONX+1;
+	 *        	| if((position > this.MAX_POSITIONX)&&(position <= 2*this.MAX_POSITIONX+1))
+	 * 			| position -= this.MAX_POSITIONX+1;
 	 * @throws  IllegalArgumentException
-	 * 			The position exceeds 2 times  the maximum position plus 1 or is smaller than minus the maximum position minus 1.
+	 * 			The position exceeds 2 times  the maximum position plus 1 or is smaller than 
+	 * 			minus the maximum position minus 1.
 	 * 			| ( position > 2*this.MAX_POSITIONX +1) || (position < -this.MAX_POSITIONX -1) 			
 	 */	
 	private void setPositionX(int position) throws IllegalArgumentException{
 		if(!isValidPositionX(position)){
-			if((position >= -MAX_POSITIONX-1)&&(position < MIN_POSITIONX))
-				position += MAX_POSITIONX+1;
-			else if((position > MAX_POSITIONX)&&(position <= 2*MAX_POSITIONX+1))
-				position -= MAX_POSITIONX+1;
+			if((position >= -this.MAX_POSITIONX-1)&&(position < this.MIN_POSITIONX))
+				position += this.MAX_POSITIONX+1;
+			else if((position >this.MAX_POSITIONX)&&(position <= 2*this.MAX_POSITIONX+1))
+				position -= this.MAX_POSITIONX+1;
 			else 
 				throw new IllegalArgumentException();
 		}
@@ -595,12 +710,13 @@ public class Mazub {
 	 * A method that checks if the position of X is a valid position.
 	 * @param 	position
 	 * 			The position to check.
-	 * @return	True if and only if the value of the position is larger than the minimum value for the x-position and is smaller than the 
+	 * @return	True if and only if the value of the position is larger than the minimum value 
+	 * 			for the x-position and is smaller than the 
 	 * 			maximum value for the x-position.
 	 * 			| result == ((position>=MIN_POSITIONX)&&(position<=MAX_POSITIONX))
 	 */
 	public boolean isValidPositionX(int position){
-		return ((position>=MIN_POSITIONX)&&(position<=MAX_POSITIONX));
+		return ((position>=this.MIN_POSITIONX)&&(position<=this.MAX_POSITIONX));
 	}
 
 	/**
@@ -608,11 +724,26 @@ public class Mazub {
 	 */
 	private int positionX;
 
+	
+	//TODO: moeten we hier ook nog getters bij maken? ik denk eigenlijk van niet.
+//	/**
+//	 * This method gives you the minimal x-position of Mazub.
+//	 */
+//	public int getMinPositionX(){
+//		return this.MIN_POSITIONX;
+//	}
+	
 	/**
 	 * Variable that registers the minimal x-position of Mazub.
 	 */
 	private static final int MIN_POSITIONX = 0;
 
+//	/**
+//	 * This method gives you the maximal x-position of Mazub.
+//	 */
+//	public int getMaxPositionX(){
+//		return this.MAX_POSITIONX;
+//	}
 	/**
 	 * Variable that registers the maximal x-position of Mazub.
 	 */
@@ -625,7 +756,10 @@ public class Mazub {
 	public int getPositionY(){
 		return this.positionY;
 	}
-	//TODO Private because we do not want others to be able to change the y-coordinate of Mazub. NOG THIS. ZETTEN
+	
+	//TODO Private because we do not want others to be able to change the y-coordinate of Mazub. NOG THIS.
+	//ZETTEN.
+	//volgens mij moeten we hier geen exeption throwen.
 	/**
 	 * Set the y-coordinate of the position of Mazub. 
 	 *
@@ -646,17 +780,14 @@ public class Mazub {
 	 * 			| 		new.getPositionY() = this.MIN_POSITIONY
 	 */
 	private void setPositionY(int position){
-		try{
-			if(!isValidPositionY(position))
-				throw new IllegalArgumentException();
-		}
-		catch(IllegalArgumentException exc){
+		if(!isValidPositionY(position)){
 			if(position < this.MIN_POSITIONY)
 				position = this.MIN_POSITIONY;
 			else position = this.MAX_POSITIONY;
 		}
 		this.positionY = position;
 	}
+	
 	/**
 	 * A method that checks if the position of Y is a valid position.
 	 * @param 	position
@@ -673,13 +804,27 @@ public class Mazub {
 	 * Variable registering the y-coordinate of Mazub.
 	 */
 	private int positionY;
-
+	
+//TODO:
+//	/**
+//	 * This method gives you the minimal y-position of Mazub.
+//	 */
+//	public int getMinPositionY(){
+//		return this.MIN_POSITIONY;
+//	}
+	
 	/**
 	 * Variable registering the minimal y-coordinate of Mazub.
 	 */
 	private static final int MIN_POSITIONY = 0;
 
-
+//	/**
+//	 * This method gives you the maximal y-position of Mazub.
+//	 */
+//	public int getMaxPositionY(){
+//		return this.MAX_POSITIONY;
+//	}
+	
 	/**
 	 * Variable registering the maximal y-coordinate of Mazub.
 	 */
@@ -695,7 +840,7 @@ public class Mazub {
 	public boolean isValidTime(double deltaT){
 		return((deltaT >=0)&&(deltaT <= 0.2));
 	}
-	//TODO documentatie catch vragen.
+	
 	/**
 	 * This method updates the position and velocity of Mazub in both directions.
 	 * If the given parameter horizontal velocity is smaller than minus the maximum horizontal velocity, 
@@ -732,30 +877,28 @@ public class Mazub {
 			throws IllegalArgumentException{
 		if (! isValidTime(deltaT))
 			throw new IllegalArgumentException();
-		try{
-			if(!isValidHorizontalVelocity(horizontalVelocity))
-				throw new IllegalArgumentException();
-		}
-		catch(IllegalArgumentException exc){
+		if(!isValidHorizontalVelocity(horizontalVelocity)){
 			if(horizontalVelocity< -this.getMaximumHorizontalVelocity())
 				horizontalVelocity=-this.getMaximumHorizontalVelocity();
 			else horizontalVelocity = this.getMaximumHorizontalVelocity();
 		}
 		this.addTime(deltaT);
 		this.getCurrentSprite();
-		if(this.move == true){
+		if(this.getMove() == true){
 			setPositionX((int)(this.getPositionX() + distanceTraveledHorizontal(horizontalVelocity, deltaT)));
 			setHorizontalVelocity(advancedHorizontalVelocity(horizontalVelocity,deltaT));
 		}
-		if(this.jump == true){
+		if(this.getJump() == true){
 			setPositionY((int)(this.getPositionY() + distanceTraveledVertical(verticalVelocity, deltaT)));
 			setVerticalVelocity(advancedVerticalVelocity(verticalVelocity, deltaT));
 			if(this.getPositionY() == 0)
-				this.jump = false;
+				this.setJump(false);
 		}
 
 	}
 
+	
+	//TODO: is deze methode nu niet @Raw, allemaal eigenlijk?
 	/**
 	 * This method calculates the distance travelled vertically based on the given velocity and over a certain time interval.
 	 * @param velocity
@@ -798,7 +941,7 @@ public class Mazub {
 	 * 			| result <= (velocity * deltaT + 0.5 * this.VERTICAL_ACCELARATION*deltaT*deltaT)*100
 	 */
 	private double distanceTraveledVertical(double velocity, double deltaT){
-		return (velocity * deltaT + 0.5 * (this.VERTICAL_ACCELARATION)*deltaT*deltaT)*100;
+		return (velocity * deltaT + 0.5 * (this.getVerticalAccelaration())*deltaT*deltaT)*100;
 	}
 
 	/**
@@ -831,7 +974,7 @@ public class Mazub {
 	 * 			| result <= velocity + (this.VERTICAL_ACCELARATION)*deltaT
 	 */
 	private double advancedVerticalVelocity(double velocity, double deltaT){
-		return velocity + (this.VERTICAL_ACCELARATION)*deltaT;
+		return velocity + (this.getVerticalAccelaration())*deltaT;
 	}
 	/**
 	 * This method adds the given time to the variable this.time
