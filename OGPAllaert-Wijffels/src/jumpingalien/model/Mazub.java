@@ -7,13 +7,20 @@ import be.kuleuven.cs.som.annotate.Immutable;
 /**
  * A class for dealing with the aliens called Mazub.
  *    In the current version Mazub does not move LOL.
- * 
+ * @invar	 Mazub's bottom left pixel must always stay on the screen.
+ * 			 | (this.getPositionX() <= this.MAX_POSITIONX) && (this.getPositionX() >= this.MIN_POSITIONX)&&
+ * 			 | (this.getPositionY() <= this.MAX_POSITIONY) && (this.getPositionY() >= this.MIN_POSITIONY)
+ * @invar	 Mazub's horizontal velocity lies between minus the maximum horizontal velocity and the maximum 
+ * 			 horizontal velocity.
+ * 			 | (this.getHorizontalVelocity() <= this.getMaximumHorizontalVelocity) && 
+ * 			 (this.getHorizontalVelocity() >= -this.getMaximumHorizontalVelocity)
+ * @invar	 Mazub's vertical velocity is always smaller than its initial vertical velocity.
+ * 			 | this.getVerticalVelocity <= this.INITIAL_VERTICAL_VELOCITY
  * @version  1.0
  * @author   Anne Wijffels
  * @author   Joni Allaert
  */
-//TODO invars + @raw
-//TODO privates
+//TODO @raw
 //TODO duckenn jumpen en lopen. links niet rechts wel juist
 public class Mazub {
 	/**
@@ -36,7 +43,7 @@ public class Mazub {
 	}
 	/**
 	 * Mazub starts moving horizontally to the left.
-	 * @pre		Mazub is not moving horizontally.		
+	 * @pre		Mazub is not moving horizontally to the left.		
 	 * @post 	Mazub starts accelerating with a specific horizontal acceleration to the left.
 	 * 		 	| new this.getHorizontalAccelaration = -this.getHorizontalAccelaration()
 	 * @effect 	Mazub starts moving with an initial horizontal velocity to the left (negative).
@@ -44,11 +51,30 @@ public class Mazub {
 	 * 
 	 */
 	public void startMoveLeft(){
-		assert !this.move;
+		assert (!this.getMove()) && (this.getHorizontalVelocity() <= 0);
 		this.setHorizontalVelocity(-this.getInitialHorizontalVelocity());
 		this.horizontalAccelaration = -this.getHorizontalAccelaration();
-		this.move = true;
-		this.timeStartLeft = this.time;
+		this.setMove(true);
+		this.setTimeStartLeft(this.getTime());
+	}
+	/**
+	 * 
+	 * This method gives you the time when Mazub last started moving left.
+	 * 
+	 */
+	@Basic
+	public double getTimeStartLeft(){
+		return this.timeStartLeft;
+	}
+	/**
+	 * Sets the time when Mazub last started moving to the left.
+	 * @param time
+	 * 			The new time when Mazub last started moving to the left.
+	 * @post	The new time when Mazub last started moving to the left is equal to the given time
+	 * 			| new this.getTimeStartLeft = time
+	 */
+	private void setTimeStartLeft(double time){
+		this.timeStartLeft = time;
 	}
 	/**
 	 * Variable registering the time when Mazub starts moving to the left.
@@ -57,7 +83,7 @@ public class Mazub {
 
 	/**
 	 * Mazub starts moving horizontally to the right.
-	 * @pre		Mazub is not moving horizontally.	
+	 * @pre		Mazub is not moving horizontally to the right.	
 	 * @post 	Mazub starts accelerating with a specific horizontal acceleration to the right.
 	 * 		 	| new this.getHorizontalAccelaration = this.getHorizontalAccelaration()
 	 * @effect	Mazub starts moving with an initial horizontal velocity to the right (positive).
@@ -65,11 +91,30 @@ public class Mazub {
 	 * 
 	 */
 	public void startMoveRight(){
-		assert !this.move;
+		assert (!this.getMove()) && (this.getHorizontalVelocity() >= 0);
 		this.setHorizontalVelocity(this.getInitialHorizontalVelocity());
 		this.horizontalAccelaration = this.getHorizontalAccelaration();
-		this.move = true;
-		this.timeStartRight = this.time;
+		this.setMove(true);
+		this.setTimeStartRight(this.getTime());
+	}
+	/**
+	 * 
+	 * This method gives you the time when Mazub last started moving right.
+	 * 
+	 */
+	@Basic
+	public double getTimeStartRight(){
+		return this.timeStartRight;
+	}
+	/**
+	 * Sets the time when Mazub last started moving to the right.
+	 * @param time
+	 * 			The new time when Mazub last started moving to the right.
+	 * @post	The new time when Mazub last started moving to the right is equal to the given time
+	 * 			| new this.getTimeStartRight = time
+	 */
+	private void setTimeStartRight(double time){
+		this.timeStartRight = time;
 	}
 
 	/**
@@ -85,12 +130,30 @@ public class Mazub {
 	 * 			| setHorizontalVelocity(0)
 	 */
 	public void endMoveLeft(){
-		assert this.move;
+		assert this.getMove();
 		this.setHorizontalVelocity(0);
-		this.move = false;
-		this.timeLastLeft = this.time;
+		this.setMove(false);
+		this.setTimeLastLeft(this.getTime());
 	}
-
+	/**
+	 * 
+	 * This method gives you the time when Mazub last finished moving left.
+	 * 
+	 */
+	@Basic
+	public double getTimeLastLeft(){
+		return this.timeLastLeft;
+	}
+	/**
+	 * Sets the time when Mazub last stops moving to the left.
+	 * @param time
+	 * 			The new time when Mazub last stopped moving to the left.
+	 * @post	The new time when Mazub last stopped moving to the left is equal to the given time
+	 * 			| new this.getTimeLastLeft = time
+	 */
+	private void setTimeLastLeft(double time){
+		this.timeLastLeft = time;
+	}
 	/**
 	 * Variable registering when Mazub stops moving to the left. 
 	 * Initialized to -2 because initially the last time Mazub moved to the left was never.
@@ -104,12 +167,30 @@ public class Mazub {
 	 * 			| setHorizontalVelocity(0)
 	 */
 	public void endMoveRight(){
-		assert this.move;
+		assert this.getMove();
 		this.setHorizontalVelocity(0);
-		this.move = false;
-		this.timeLastRight = this.time;
+		this.setMove(false);
+		this.setTimeLastRight(this.getTime());
 	}
-
+	/**
+	 * 
+	 * This method gives you the time when Mazub last finished moving right.
+	 * 
+	 */
+	@Basic
+	public double getTimeLastRight(){
+		return this.timeLastRight;
+	}
+	/**
+	 * Sets the time when Mazub last stops moving to the right.
+	 * @param time
+	 * 			The new time when Mazub last stopped moving to the right.
+	 * @post	The new time when Mazub last stopped moving to the right is equal to the given time
+	 * 			| new this.getTimeLastRight = time
+	 */
+	private void setTimeLastRight(double time){
+		this.timeLastRight = time;
+	}
 	/**
 	 * Variable registering when Mazub stops moving to the right. 
 	 */
@@ -119,6 +200,16 @@ public class Mazub {
 	 */
 	public boolean getMove(){
 		return this.move;
+	}
+	/**
+	 * Sets the boolean that registers if Mazub is moving.
+	 * @param flag
+	 * 			The new state.
+	 * @post	The new state variable that registers if Mazub is moving.
+	 * 			| new this.getMove() = flag
+	 */
+	private void setMove(boolean flag){
+		this.move = flag;
 	}
 	/**
 	 * Variable registering if Mazub is moving (true) or is not moving (false).
@@ -750,7 +841,26 @@ public class Mazub {
 	 * 			| new this.time == this.time + time
 	 */
 	private void addTime(double time){
-		this.time += time;
+		this.setTime(this.getTime() + time);
+	}
+	/**
+	 * 
+	 * This method gives you the current time duration of the game.
+	 * 
+	 */
+	@Basic
+	public double getTime(){
+		return this.time;
+	}
+	/**
+	 * Sets the current time duration of the game.
+	 * @param time
+	 * 			The new current time.
+	 * @post	The new current time is equal to the given time.
+	 * 			| new this.getTime = time
+	 */
+	private void setTime(double time){
+		this.time = time;
 	}
 	/**
 	 * A variable that keeps track of the time that has passed.
