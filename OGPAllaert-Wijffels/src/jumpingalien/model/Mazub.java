@@ -166,7 +166,7 @@ public class Mazub {
 	// zijn met een verschillende initiele snelheden? Of is dit gewoon voor als je de klasse zou aanpassen?
 	// ik denk ook dat deze methode een statische methode(methode die voor elke object van de klasse hetzelfde is) moet zijn. 
 	// JONI: Misschien heb je daar wel gelijk da zullen we samen is bekijken.
-
+	//variabele maken en die final maken.
 	/**
 	 * Gives the initial horizontal velocity of Mazub.
 	 * 
@@ -181,7 +181,7 @@ public class Mazub {
 	 *         clients.
 	 */
 	@Basic @Immutable
-	public static double getInitialHorizontalVelocity(){
+	public double getInitialHorizontalVelocity(){
 		return 1;
 	}
 
