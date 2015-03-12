@@ -137,7 +137,7 @@ public class Facade implements IFacade{
 	@Override
 	public double[] getAcceleration(Mazub alien) {
 		// TODO Auto-generated method stub
-		double[] array = {alien.getHorizontalAccelaration(), alien.getVerticalAccelaration()};
+		double[] array = {alien.getHorizontalAccelaration(), alien.getVerticalAcceleration()};
 		return array;
 	}
 
@@ -185,7 +185,7 @@ public class Facade implements IFacade{
 			alien.startJump();
 		}
 		catch(IllegalStateException exc){
-			throw new ModelException("You can't jump while jumping nor jump while ducking.");
+			throw new ModelException("You can't carry out this action.");
 		}
 	}
 
@@ -202,7 +202,7 @@ public class Facade implements IFacade{
 			alien.endJump();
 		}
 		catch(IllegalStateException exc){
-			throw new ModelException("You can't jump while jumping.");		
+			throw new ModelException("You can't carry out this action.");		
 
 		}
 		
@@ -271,7 +271,7 @@ public class Facade implements IFacade{
 			alien.startDuck();
 		}
 		catch(IllegalStateException exc){
-			throw new ModelException("You can't duck while jumping.");		
+			throw new ModelException("You can't carry out this action.");		
 		}
 		
 	}
@@ -285,12 +285,12 @@ public class Facade implements IFacade{
 	@Override
 	public void endDuck(Mazub alien) {
 		// TODO Auto-generated method stub
-		//try{
+		try{
 			alien.endDuck();
-	//	}
-	//	catch(IllegalStateException exc){
-	//		throw new ModelException("You can't stop ducking when you're not ducking.");		
-	//	}
+		}
+		catch(IllegalStateException exc){
+			throw new ModelException("You can't carry out this action.");		
+		}
 		
 	}
 
