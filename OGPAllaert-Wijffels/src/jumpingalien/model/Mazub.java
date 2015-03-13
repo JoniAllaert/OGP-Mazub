@@ -3,7 +3,7 @@ import jumpingalien.util.Sprite;
 import be.kuleuven.cs.som.annotate.Basic;
 import be.kuleuven.cs.som.annotate.Immutable;
 //TODO:import be.kuleuven.cs.som.annotate.Raw;
-
+//TODO: nog eens kijken naar start move left en right, wat willen we hier precies mee doen?
 
 /**
  * A class for dealing with aliens called Mazub.
@@ -51,7 +51,9 @@ public class Mazub {
 	 * 			| setTimeStartLeft(this.getTime())
 	 */
 	public void startMoveLeft(){
-		assert (!this.getMove()) && (this.getHorizontalVelocity() <= 0);
+		assert (
+				//(!this.getMove()) && 
+				(this.getHorizontalVelocity() >= 0));
 		this.setHorizontalVelocity(-this.getInitialHorizontalVelocity());
 		this.setMove(true);
 		this.setTimeStartLeft(this.getTime());
@@ -92,7 +94,9 @@ public class Mazub {
 	 * 			| setTimeStartRight(this.getTime())
 	 */
 	public void startMoveRight(){
-		assert (!this.getMove()) && (this.getHorizontalVelocity() >= 0);
+		assert (
+				//(!this.getMove()) && 
+				(this.getHorizontalVelocity() <= 0));
 		this.setHorizontalVelocity(this.getInitialHorizontalVelocity());
 		this.setMove(true);
 		this.setTimeStartRight(this.getTime());
