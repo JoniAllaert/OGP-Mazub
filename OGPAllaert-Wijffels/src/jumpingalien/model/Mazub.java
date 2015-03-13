@@ -42,7 +42,7 @@ public class Mazub {
 
 	/**
 	 * Mazub starts moving horizontally to the left.
-	 * @pre		Mazub is not moving horizontally to the left.		
+	 * @pre		Mazub is not moving.		
 	 * @effect 	Mazub starts moving with an initial horizontal velocity to the left (negative).
 	 * 		 	| setHorzontalAcceleration( - this.getInitialHorizontalVelocity())
 	 * @effect	The variable that registers if Mazub is moving is set to true.
@@ -51,9 +51,7 @@ public class Mazub {
 	 * 			| setTimeStartLeft(this.getTime())
 	 */
 	public void startMoveLeft(){
-		assert (
-				//(!this.getMove()) && 
-				(this.getHorizontalVelocity() >= 0));
+		assert (!this.getMove());
 		this.setHorizontalVelocity(-this.getInitialHorizontalVelocity());
 		this.setMove(true);
 		this.setTimeStartLeft(this.getTime());
@@ -85,7 +83,7 @@ public class Mazub {
 
 	/**
 	 * Mazub starts moving horizontally to the right.
-	 * @pre		Mazub is not moving horizontally to the right.
+	 * @pre		Mazub is not moving.
 	 * @effect	Mazub starts moving with an initial horizontal velocity to the right (positive).
 	 * 		 	| setHorzontalAcceleration(this.getInitialHorizontalVelocity())
 	 * @effect	The variable that registers if Mazub is moving is set to true.
@@ -94,9 +92,7 @@ public class Mazub {
 	 * 			| setTimeStartRight(this.getTime())
 	 */
 	public void startMoveRight(){
-		assert (
-				//(!this.getMove()) && 
-				(this.getHorizontalVelocity() <= 0));
+		assert (!this.getMove());
 		this.setHorizontalVelocity(this.getInitialHorizontalVelocity());
 		this.setMove(true);
 		this.setTimeStartRight(this.getTime());
@@ -128,7 +124,7 @@ public class Mazub {
 
 	/**
 	 * Mazub stops moving to the left.
-	 * @pre		Mazub is moving horizontally.
+	 * @pre		Mazub is moving horizontally to the left.
 	 * @effect 	Mazub's horizontal velocity equals 0 m/s.
 	 * 			| setHorizontalVelocity(0)
 	 * @effect	The variable that registers if Mazub is moving is set to false.
@@ -137,7 +133,7 @@ public class Mazub {
 	 * 			| setTimeLastLeft(this.getTime())
 	 */
 	public void endMoveLeft(){
-		assert this.getMove();
+		assert (this.getMove() && (this.getHorizontalVelocity() <= 0));
 		this.setHorizontalVelocity(0);
 		this.setMove(false);
 		this.setTimeLastLeft(this.getTime());
@@ -170,7 +166,7 @@ public class Mazub {
 
 	/**
 	 * Mazub stops moving to the right.
-	 * @pre		Mazub is moving horizontally.
+	 * @pre		Mazub is moving horizontally to the right.
 	 * @effect  Mazub's horizontal velocity equals 0 m/s.
 	 * 			| setHorizontalVelocity(0)
 	 * @effect	The variable that registers if Mazub is moving is set to false.
@@ -179,7 +175,7 @@ public class Mazub {
 	 * 			| setTimeLastRight(this.getTime())
 	 */
 	public void endMoveRight(){
-		assert this.getMove();
+		assert (this.getMove() && (this.getHorizontalVelocity() >= 0 ));
 		this.setHorizontalVelocity(0);
 		this.setMove(false);
 		this.setTimeLastRight(this.getTime());

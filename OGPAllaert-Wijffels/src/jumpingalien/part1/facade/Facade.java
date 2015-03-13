@@ -217,8 +217,12 @@ public class Facade implements IFacade{
 	@Override
 	public void startMoveLeft(Mazub alien) {
 		// TODO Auto-generated method stub
+		try{
 		alien.startMoveLeft();
-		
+		}
+		catch(AssertionError exc){
+			throw new ModelException("You can't carry out this action.");		
+		}
 	}
 
 	/**
@@ -230,7 +234,12 @@ public class Facade implements IFacade{
 	@Override
 	public void endMoveLeft(Mazub alien) {
 		// TODO Auto-generated method stub
-		alien.endMoveLeft();
+		try{
+			alien.endMoveLeft();
+		}
+		catch(AssertionError exc){
+			throw new ModelException("You can't carry out this action.");		
+		}
 	}
 
 	/**
@@ -242,7 +251,12 @@ public class Facade implements IFacade{
 	@Override
 	public void startMoveRight(Mazub alien) {
 		// TODO Auto-generated method stub
-		alien.startMoveRight();
+		try{
+			alien.startMoveRight();
+		}
+		catch(AssertionError exc){
+			throw new ModelException("You can't carry out this action.");		
+		}
 		
 	}
 
@@ -255,7 +269,12 @@ public class Facade implements IFacade{
 	@Override
 	public void endMoveRight(Mazub alien) {
 		// TODO Auto-generated method stub
-		alien.endMoveRight();
+		try{
+			alien.endMoveRight();
+		}
+		catch(AssertionError exc){
+			throw new ModelException("You can't carry out this action.");		
+		}
 	}
 
 	/**
