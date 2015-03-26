@@ -2,8 +2,9 @@ package jumpingalien.model;
 import jumpingalien.util.Sprite;
 import be.kuleuven.cs.som.annotate.Basic;
 import be.kuleuven.cs.som.annotate.Immutable;
-//TODO:import be.kuleuven.cs.som.annotate.Raw;
-//TODO: nog eens kijken naar start move left en right, wat willen we hier precies mee doen?
+//Joni Allaert r0364596 3e bachelor Wiskunde.
+//Anne Wijffels r0384647 3e bachelor Wiskunde.
+//https://github.com/JoniAllaert/OGP-Mazub
 
 /**
  * A class for dealing with aliens called Mazub.
