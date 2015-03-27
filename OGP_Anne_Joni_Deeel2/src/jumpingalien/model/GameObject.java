@@ -16,9 +16,6 @@ public abstract class GameObject {
 	public abstract void startMoveRight();
 	public abstract void endMoveLeft();
 	public abstract void endMoveRight();
-	//Hoe maken we dat dan private
-	//public abstract void setHorizontalVelocity(double velocity);
-	// public abstract double getHorizontalVelocity();
 	public abstract Sprite getCurrentSprite();
 	/**
 	 * This method gives the width of the current sprite of Mazub.
