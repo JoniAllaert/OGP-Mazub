@@ -4,6 +4,12 @@ import jumpingalien.util.Sprite;
 
 public class Shark extends GameObject{
 
+	protected Shark(int pixelLeftX, int pixelBottomY, Sprite[] sprites,
+			int hitpoints) {
+		super(pixelLeftX, pixelBottomY, sprites, hitpoints);
+		// TODO Auto-generated constructor stub
+	}
+
 	@Override
 	public void startMoveLeft() {
 		// TODO Auto-generated method stub

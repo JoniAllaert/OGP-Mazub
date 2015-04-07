@@ -275,14 +275,15 @@ public class Mazub extends GameObject{
 	 *       	| result >= this.getInitialHorizontalVelocity()
 	 */
 	@Basic
-	public double getInitialMaximalHorizontalVelocity(){
+	public static  double getInitialMaximalHorizontalVelocity(){
 		return INITIAL_MAXIMAL_HORIZONTAL_VELOCITY;
 	}
+	//TODO: hier heb ik static van gemaakt, van zowel de vriable als de methode om hem te getten.
 	
 	/**
 	 * Variable that registers the initial maximal horizontal velocity.
 	 */
-	private final double INITIAL_MAXIMAL_HORIZONTAL_VELOCITY = 3;
+	private static final double INITIAL_MAXIMAL_HORIZONTAL_VELOCITY = 3;
 	
 
 	/**
@@ -311,9 +312,10 @@ public class Mazub extends GameObject{
 	 *       	| result >= 0
 	 */
 	@Basic @Immutable
-	public double getHorizontalAccelaration(){
+	public static double getHorizontalAccelaration(){
 		return HORIZONTAL_ACCELERATION;
 	}
+	//TODO: hier heb ik ook static van gemaakt.
 
 	/**
 	 * Variable registering the horizontal acceleration.
@@ -408,9 +410,10 @@ public class Mazub extends GameObject{
 	 *         | result = 8
 	 */
 	@Basic @Immutable
-	public double getInitialVerticalVelocity(){
+	public static double getInitialVerticalVelocity(){
 		return INITIAL_VERTICAL_VELOCITY;
 	}
+	//TODO: hier heb ik ook static van gemaakt.
 
 	/**
 	 * Variable registering the initial vertical velocity.
@@ -423,9 +426,10 @@ public class Mazub extends GameObject{
 	 *         | result = -10
 	 */
 	@Basic @Immutable
-	public double getVerticalAcceleration(){
+	public static double getVerticalAcceleration(){
 		return VERTICAL_ACCELERATION;
 	}
+	//TODO: hier heb ik ook static van gemaakt.
 
 	/**
 	 * Variable registering the vertical acceleration.
