@@ -10,14 +10,8 @@ import jumpingalien.util.Sprite;
  */
 public class Shark extends GameObject{
 
-<<<<<<< HEAD
-	protected Shark(int pixelLeftX, int pixelBottomY, Sprite[] sprites,
-			int hitpoints) {
-		super(pixelLeftX, pixelBottomY, sprites, hitpoints);
-		// TODO Auto-generated constructor stub
-	}
 
-=======
+
 	/**
 	 * Initializes a shark with the given position and given sprite.
 	 * @param pixelLeftX
@@ -27,11 +21,11 @@ public class Shark extends GameObject{
 	 * @param sprites
 	 * 		  An array of all possible images of the plant.
 	 */
-	protected Shark(int pixelLeftX, int pixelBottomY, Sprite[] sprites) {
+	public Shark(int pixelLeftX, int pixelBottomY, Sprite[] sprites) {
 		super(pixelLeftX, pixelBottomY, sprites, 100);
 	}
 	
->>>>>>> origin/master
+	
 	@Override
 	public void startMoveLeft() {
 		// TODO Auto-generated method stub
@@ -60,6 +54,34 @@ public class Shark extends GameObject{
 	public Sprite getCurrentSprite() {
 		// TODO Auto-generated method stub
 		return null;
+	}
+	
+	
+	public double getHorizontalVelocity() {
+		return horizontalVelocity;
+	}
+
+
+	public void setHorizontalVelocity(double horizontalVelocity) {
+		this.horizontalVelocity = horizontalVelocity;
+	}
+
+
+	public double getVerticalVelocity() {
+		return verticalVelocity;
+	}
+
+
+	public void setVerticalVelocity(double verticalVelocity) {
+		this.verticalVelocity = verticalVelocity;
+	}
+
+
+	private double horizontalVelocity;
+	private double verticalVelocity;
+	
+	public void advanceTime(double horizontalVelocity, double verticalVelocity, double deltaT){
+		
 	}
 
 }

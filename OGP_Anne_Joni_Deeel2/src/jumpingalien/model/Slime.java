@@ -17,8 +17,9 @@ public class Slime extends GameObject{
 	 * @param sprites
 	 * 		  An array of all possible images of the plant.
 	 */
-	protected Slime(int pixelLeftX, int pixelBottomY, Sprite[] sprites) {
+	public Slime(int pixelLeftX, int pixelBottomY, Sprite[] sprites, School school) {
 		super(pixelLeftX, pixelBottomY, sprites, 100);
+		//TODO: doe iets met school.
 	}
 
 	@Override
@@ -49,5 +50,19 @@ public class Slime extends GameObject{
 	public Sprite getCurrentSprite() {
 		// TODO Auto-generated method stub
 		return null;
+	}
+	
+	private double horizontalVelocity;
+
+	public double getHorizontalVelocity() {
+		return horizontalVelocity;
+	}
+
+	public void setHorizontalVelocity(double horizontalVelocity) {
+		this.horizontalVelocity = horizontalVelocity;
+	}
+	
+	public void advanceTime(double horizontalVelocity, double deltaT){
+		
 	}
 }

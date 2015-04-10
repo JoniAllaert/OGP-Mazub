@@ -37,7 +37,7 @@ public abstract class GameObject {
 	 * This method gives the width of the current sprite of the game object.
 	 */
 	@Basic
-	public int getSizeX(){
+	public int getWidth(){
 		return this.getCurrentSprite().getWidth();
 	}
 
@@ -45,13 +45,21 @@ public abstract class GameObject {
 	 * This method gives the height of the current sprite of the game object.
 	 */
 	@Basic
-	public int getSizeY() {
+	public int getHeight() {
 		return this.getCurrentSprite().getHeight();
 	}
 	/**
 	 * Array of all the images to display the game object
 	 */
 	protected Sprite[] sprites;
+
+	public Sprite[] getSprites() {
+		return sprites.clone();
+	}
+
+	private void setSprites(Sprite[] sprites) {
+		this.sprites = sprites;
+	}
 
 	/**
 	 * Returns the x-coordinate of the position of game object.
@@ -306,10 +314,16 @@ public abstract class GameObject {
 	 * This method changes the status of the game object to terminated.
 	 */
 	protected void terminates(){
-		this.isTerminated = true;
+		this.dead = true;
 	}
 	/**
 	 * Variable registering if a game object is terminated or not.
 	 */
-	private boolean isTerminated;
+	private boolean dead;
+	
+	public boolean isTerminated(){
+		return dead;
+	}
+	
+//	public abstract void advanceTime(double deltaT);
 }

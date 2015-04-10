@@ -7,6 +7,7 @@ import jumpingalien.model.Plant;
 import jumpingalien.model.School;
 import jumpingalien.model.Shark;
 import jumpingalien.model.Slime;
+import jumpingalien.model.Tile;
 import jumpingalien.model.World;
 import jumpingalien.util.ModelException;
 import jumpingalien.util.Sprite;
@@ -258,7 +259,7 @@ public class Facade implements jumpingalien.part2.facade.IFacadePart2 {
 	 * Returns the current number of hitpoints of the given alien.
 	 */
 	public int getNbHitPoints(Mazub alien){
-		return 0;
+		return alien.getHitPoints();
 	}
 
 	/**
@@ -282,7 +283,8 @@ public class Facade implements jumpingalien.part2.facade.IFacadePart2 {
 	public World createWorld(int tileSize, int nbTilesX, int nbTilesY,
 			int visibleWindowWidth, int visibleWindowHeight, int targetTileX,
 			int targetTileY){
-		return null;
+		World world = new World(tileSize, nbTilesX, nbTilesY, visibleWindowWidth, visibleWindowHeight, targetTileX, targetTileY);
+		return world;
 	}
 
 	/**
@@ -294,7 +296,8 @@ public class Facade implements jumpingalien.part2.facade.IFacadePart2 {
 	 *         elements: width (X) and height (Y), in that order.
 	 */
 	public int[] getWorldSizeInPixels(World world){
-		return null;
+		int[] array = {world.getxMax(), world.getyMax()};
+		return array;
 	}
 
 	/**
@@ -307,7 +310,7 @@ public class Facade implements jumpingalien.part2.facade.IFacadePart2 {
 	 *         pixels.
 	 */
 	public int getTileLength(World world){
-		return 0;
+		return world.getTileSize();
 	}
 
 	/**
@@ -324,7 +327,7 @@ public class Facade implements jumpingalien.part2.facade.IFacadePart2 {
 	 *            world for which to start the game.
 	 */
 	public void startGame(World world){
-		
+		//TODO: geen idee.
 	}
 
 	/**
@@ -336,7 +339,7 @@ public class Facade implements jumpingalien.part2.facade.IFacadePart2 {
 	 * @return true if the game is over, false otherwise.
 	 */
 	public boolean isGameOver(World world){
-		return false;
+		return world.isGameOver();
 	}
 
 	/**
@@ -348,7 +351,7 @@ public class Facade implements jumpingalien.part2.facade.IFacadePart2 {
 	 * @return true if the game is over and the player has won; false otherwise.
 	 */
 	public boolean didPlayerWin(World world){
-		return false;
+		return world.didPlayerWin();
 	}
 
 	/**
@@ -362,7 +365,9 @@ public class Facade implements jumpingalien.part2.facade.IFacadePart2 {
 	 *            The time interval (in seconds) by which to advance the given
 	 *            world's time.
 	 */
-	public void advanceTime(World world, double dt){}
+	public void advanceTime(World world, double dt){
+		world.advanceTime(dt);
+	}
 
 	/**
 	 * Return the coordinates of the rectangular visible window that moves
@@ -372,7 +377,7 @@ public class Facade implements jumpingalien.part2.facade.IFacadePart2 {
 	 *         <b>left, bottom, right, top</b>.
 	 */
 	public int[] getVisibleWindow(World world){
-		return null;
+		return world.getVisibleWindow();
 	}
 
 	/**
@@ -389,7 +394,7 @@ public class Facade implements jumpingalien.part2.facade.IFacadePart2 {
 	 *         bottom left pixel of the given tile, in that order.
 	 */
 	public int[] getBottomLeftPixelOfTile(World world, int tileX, int tileY){
-		return null;
+		return world.getBottomLeftPixelOfTile(tileX, tileY);
 	}
 
 	/**
@@ -416,8 +421,8 @@ public class Facade implements jumpingalien.part2.facade.IFacadePart2 {
 	 * 
 	 */
 	public int[][] getTilePositionsIn(World world, int pixelLeft, int pixelBottom,
-			int pixelRight, int pixelTop){
-		return null;
+			int pixelRight, int pixelTop){ 
+			return world.getTilePositions(pixelLeft, pixelBottom,pixelRight, pixelTop);
 	}
 
 	/**
@@ -450,8 +455,8 @@ public class Facade implements jumpingalien.part2.facade.IFacadePart2 {
 	 *        bottom left pixel of a tile.
 	 */
 	public int getGeologicalFeature(World world, int pixelX, int pixelY)
-			throws ModelException{
-		return 0;
+			throws ModelException{			
+			return world.getGeologicalFeature(pixelX, pixelY);
 	}
 
 	/**
@@ -477,7 +482,7 @@ public class Facade implements jumpingalien.part2.facade.IFacadePart2 {
 	 *            </ul>
 	 */
 	public void setGeologicalFeature(World world, int tileX, int tileY, int tileType){
-		
+		world.setGeologicalFeature(tileX, tileY, tileType);
 	}
 
 	/**
@@ -489,7 +494,7 @@ public class Facade implements jumpingalien.part2.facade.IFacadePart2 {
 	 *            The alien to be set as the player's character.
 	 */
 	public void setMazub(World world, Mazub alien){
-		
+		world.setMazub(alien);
 	}
 
 	/**
@@ -503,6 +508,7 @@ public class Facade implements jumpingalien.part2.facade.IFacadePart2 {
 	 */
 	public boolean isImmune(Mazub alien){
 		return false;
+		//TODO
 	}
 
 	/**
@@ -520,7 +526,8 @@ public class Facade implements jumpingalien.part2.facade.IFacadePart2 {
 	 *         should not belong to a world.
 	 */
 	public Plant createPlant(int x, int y, Sprite[] sprites){
-		return null;
+		Plant plant = new Plant(x, y, sprites);
+		return plant;
 	}
 
 	/**
@@ -532,7 +539,7 @@ public class Facade implements jumpingalien.part2.facade.IFacadePart2 {
 	 *            The plant that needs to be added to the world.
 	 */
 	public void addPlant(World world, Plant plant){
-		
+		world.addPlant(plant);
 	}
 
 	/**
@@ -545,7 +552,7 @@ public class Facade implements jumpingalien.part2.facade.IFacadePart2 {
 	 *         collection, but each plant may only be returned once.
 	 */
 	public Collection<Plant> getPlants(World world){
-		return null;
+		return world.getPlants();
 	}
 
 	/**
@@ -557,7 +564,8 @@ public class Facade implements jumpingalien.part2.facade.IFacadePart2 {
 	 *         coordinates of the given plant's bottom left pixel in the world.
 	 */
 	public int[] getLocation(Plant plant){
-		return null;
+		int[] array = {plant.getPositionX(), plant.getPositionY()};
+		return array;
 	}
 
 	/**
@@ -570,7 +578,7 @@ public class Facade implements jumpingalien.part2.facade.IFacadePart2 {
 	 *         orientation as defined in the assignment.
 	 */
 	public Sprite getCurrentSprite(Plant plant){
-		return null;
+		return plant.getCurrentSprite();
 	}
 
 	/**
@@ -588,7 +596,8 @@ public class Facade implements jumpingalien.part2.facade.IFacadePart2 {
 	 *         should not belong to a world.
 	 */
 	public Shark createShark(int x, int y, Sprite[] sprites){
-		return null;
+		Shark shark = new Shark(x, y, sprites);
+		return shark;
 	}
 
 	/**
@@ -600,7 +609,7 @@ public class Facade implements jumpingalien.part2.facade.IFacadePart2 {
 	 *            The shark that needs to be added to the world.
 	 */
 	public void addShark(World world, Shark shark){
-		
+		world.addShark(shark);
 	}
 
 	/**
@@ -613,7 +622,7 @@ public class Facade implements jumpingalien.part2.facade.IFacadePart2 {
 	 *         collection, but each shark may only be returned once.
 	 */
 	public Collection<Shark> getSharks(World world){
-		return null;
+		return world.getSharks();
 	}
 
 	/**
@@ -625,7 +634,8 @@ public class Facade implements jumpingalien.part2.facade.IFacadePart2 {
 	 *         coordinates of the given shark's bottom left pixel in the world.
 	 */
 	public int[] getLocation(Shark shark){
-		return null;
+		int[] array = {shark.getPositionX(), shark.getPositionY()};
+		return array;
 	}
 
 	/**
@@ -638,7 +648,7 @@ public class Facade implements jumpingalien.part2.facade.IFacadePart2 {
 	 *         orientation as defined in the assignment.
 	 */
 	public Sprite getCurrentSprite(Shark shark){
-		return null;
+		return shark.getCurrentSprite();
 	}
 
 	/**
@@ -647,7 +657,9 @@ public class Facade implements jumpingalien.part2.facade.IFacadePart2 {
 	 * @return A new school for slimes, without any members.
 	 */
 	public School createSchool(){
+		School school = new School();
 		return null;
+		//TODO
 	}
 
 	/**
@@ -667,7 +679,8 @@ public class Facade implements jumpingalien.part2.facade.IFacadePart2 {
 	 *         given school. The returned slime should not belong to a world.
 	 */
 	public Slime createSlime(int x, int y, Sprite[] sprites, School school){
-		return null;
+		Slime slime = new Slime(x, y, sprites, school);
+		return slime;
 	}
 
 	/**
@@ -679,7 +692,7 @@ public class Facade implements jumpingalien.part2.facade.IFacadePart2 {
 	 *            The slime that needs to be added to the world.
 	 */
 	public void addSlime(World world, Slime slime){
-		
+		world.addSlime(slime);
 	}
 
 	/**
@@ -692,7 +705,7 @@ public class Facade implements jumpingalien.part2.facade.IFacadePart2 {
 	 *         collection, but each slime may only be returned once.
 	 */
 	public Collection<Slime> getSlimes(World world){
-		return null;
+		return world.getSlimes();
 	}
 
 	/**
@@ -704,7 +717,8 @@ public class Facade implements jumpingalien.part2.facade.IFacadePart2 {
 	 *         coordinates of the given slime's bottom left pixel in the world.
 	 */
 	public int[] getLocation(Slime slime){
-		return null;
+		int[] array = {slime.getPositionX(),slime.getPositionY()};
+		return array;
 	}
 
 	/**
@@ -717,7 +731,7 @@ public class Facade implements jumpingalien.part2.facade.IFacadePart2 {
 	 *         orientation as defined in the assignment.
 	 */
 	public Sprite getCurrentSprite(Slime slime){
-		return null;
+		return slime.getCurrentSprite();
 	}
 
 	/**
@@ -729,7 +743,8 @@ public class Facade implements jumpingalien.part2.facade.IFacadePart2 {
 	 * @return The current school of the given slime.
 	 */
 	public School getSchool(Slime slime){
-		return null;
+		return slime.getSchool();
+		//TODO: kijken naar school in slime.
 	}
 
 }

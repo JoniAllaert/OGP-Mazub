@@ -19,7 +19,7 @@ public class Plant extends GameObject{
 	 * @param sprites
 	 * 		  An array of all possible images of the plant.
 	 */
-	protected Plant(int pixelLeftX, int pixelBottomY, Sprite[] sprites) {
+	public Plant(int pixelLeftX, int pixelBottomY, Sprite[] sprites) {
 		super(pixelLeftX, pixelBottomY, sprites, 1);
 	}
 
@@ -125,9 +125,8 @@ public class Plant extends GameObject{
 		return null;
 	}
 
-//	@Override
-//	public void advanceTime(double horizontalVelocity, double verticalVelocity,
-//			double deltaT) {
+	public void advanceTime(double horizontalVelocity,
+			double deltaT) {
 //		if((this.getTimeLastLeft() + 0.5 >= this.getTime())&&(this.getTimeLastRight() + 0.5 <= this.getTime())){
 //			endMoveLeft();
 //			startMoveRight();
@@ -135,8 +134,7 @@ public class Plant extends GameObject{
 //		else {
 //			endMoveRight();
 //			startMoveLeft();
-//		}
-//		
-//	}
-
+		}
+		
 }
+
