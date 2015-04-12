@@ -2,6 +2,7 @@ package jumpingalien.model;
 import jumpingalien.util.Sprite;
 import be.kuleuven.cs.som.annotate.Basic;
 import be.kuleuven.cs.som.annotate.Immutable;
+import jumpingalien.model.World;
 /**
  * A class for dealing with aliens called Mazub.
  * @invar	 Mazub's bottom left pixel must always stay on the screen.
@@ -53,29 +54,7 @@ public class Mazub extends GameObject{
 		this.setTimeStartLeft(this.getTime());
 	}
 
-	/**
-	 * This method gives you the time when Mazub last started moving left.
-	 */
-	@Basic
-	public double getTimeStartLeft(){
-		return this.timeStartLeft;
-	}
-
-	/**
-	 * Sets the time when Mazub last started moving to the left.
-	 * @param time
-	 * 			The new time when Mazub last started moving to the left.
-	 * @post	The new time when Mazub last started moving to the left is equal to the given time.
-	 * 			| new this.getTimeStartLeft = time
-	 */
-	private void setTimeStartLeft(double time){
-		this.timeStartLeft = time;
-	}
-
-	/**
-	 * Variable registering the time when Mazub starts moving to the left.
-	 */
-	private double timeStartLeft;
+	
 
 	/**
 	 * Mazub starts moving horizontally to the right.
@@ -96,30 +75,6 @@ public class Mazub extends GameObject{
 	}
 
 	/**
-	 * This method gives you the time when Mazub last started moving right.
-	 */
-	@Basic
-	public double getTimeStartRight(){
-		return this.timeStartRight;
-	}
-
-	/**
-	 * Sets the time when Mazub last started moving to the right.
-	 * @param time
-	 * 			The new time when Mazub last started moving to the right.
-	 * @post	The new time when Mazub last started moving to the right is equal to the given time.
-	 * 			| new this.getTimeStartRight = time
-	 */
-	private void setTimeStartRight(double time){
-		this.timeStartRight = time;
-	}
-
-	/**
-	 * Variable registering the time when Mazub starts moving to the right. 
-	 */
-	private double timeStartRight;
-
-	/**
 	 * Mazub stops moving to the left.
 	 * @pre		Mazub is moving horizontally to the left.
 	 * @effect 	Mazub's horizontal velocity equals 0 m/s.
@@ -137,8 +92,6 @@ public class Mazub extends GameObject{
 		this.setTimeLastLeft(this.getTime());
 	}
 
-	
-
 	/**
 	 * Mazub stops moving to the right.
 	 * @pre		Mazub is moving horizontally to the right.
@@ -155,39 +108,6 @@ public class Mazub extends GameObject{
 		this.setHorizontalVelocity(0);
 		this.setMove(false);
 		this.setTimeLastRight(this.getTime());
-	}
-
-	
-
-	/**
-	 * This method gives you the current state of the boolean variable move.
-	 */
-	public boolean getMove(){
-		return this.move;
-	}
-
-	/**
-	 * Sets the boolean that registers if Mazub is moving.
-	 * @param flag
-	 * 			The new state.
-	 * @post	The new state variable that registers if Mazub is moving.
-	 * 			| new this.getMove() = flag
-	 */
-	private void setMove(boolean flag){
-		this.move = flag;
-	}
-
-	/**
-	 * Variable registering if Mazub is moving (true) or is not moving (false).
-	 */
-	private boolean move;
-
-	/**
-	 * This method gives you the current horizontal velocity of Mazub.
-	 */
-	@Basic
-	public double getHorizontalVelocity(){
-		return this.horizontalVelocity;
 	}
 
 	/**
@@ -208,7 +128,8 @@ public class Mazub extends GameObject{
 	 * 			| 		(velocity> this.getMaximumHorizontalVelocity()))
 	 * 			| new.getHorizontalVelocity() = velocity
 	 */
-	private void setHorizontalVelocity(double velocity){
+	@Override
+	protected void setHorizontalVelocity(double velocity){
 		if(velocity > this.getMaximumHorizontalVelocity()) 
 			this.horizontalVelocity = this.getMaximumHorizontalVelocity();
 		if(velocity < -(this.getMaximumHorizontalVelocity())) 
@@ -295,14 +216,11 @@ public class Mazub extends GameObject{
 	 * 			maximum horizontal velocity.
 	 * 			| result == (Math.abs(velocity) <= this.getMaximumHorizontalVelocity())
 	 */
+	@Override
 	public boolean isValidHorizontalVelocity(double velocity){
 		return(Math.abs(velocity) <= this.getMaximumHorizontalVelocity());
 	}
 
-	/**
-	 * Variable registering the horizontal velocity.
-	 */
-	private double horizontalVelocity;
 
 	/**
 	 * Return the value for the horizontal acceleration of Mazub.
@@ -315,7 +233,6 @@ public class Mazub extends GameObject{
 	public static double getHorizontalAccelaration(){
 		return HORIZONTAL_ACCELERATION;
 	}
-	//TODO: hier heb ik ook static van gemaakt.
 
 	/**
 	 * Variable registering the horizontal acceleration.
@@ -380,28 +297,16 @@ public class Mazub extends GameObject{
 	private boolean jump;
 
 	/**
-	 * This method gives you the current vertical velocity of Mazub.
-	 */
-	@Basic
-	public double getVerticalVelocity(){
-		return this.verticalVelocity;
-	}
-
-	/**
 	 * Set the Vertical velocity of Mazub to a given velocity.
 	 * @param velocity
 	 * 			The new vertical velocity.
 	 * @post	The new velocity is equal to the given velocity.
 	 * 			| new.getVerticalVelocity() = velocity
 	 */
-	private void setVerticalVelocity(double velocity){
+	@Override
+	protected void setVerticalVelocity(double velocity){
 		this.verticalVelocity = velocity;
 	}
-
-	/**
-	 * Variable registering the vertical velocity.
-	 */
-	private double verticalVelocity;
 
 	/**
 	 * Gives the initial vertical velocity of Mazub.
@@ -566,17 +471,7 @@ public class Mazub extends GameObject{
 	 */
 	private final int M = 10;
 
-	/**
-	 * A method that checks if the time duration is valid.
-	 * @param 	deltaT
-	 * 			a time duration in seconds.
-	 * @return 	True if deltaT is bigger than zero and smaller than 0.2.
-	 * 			result == ((deltaT >= 0) && (deltaT<= 0.2))
-	 */
-	public boolean isValidTime(double deltaT){
-		return((deltaT >=0)&&(deltaT <= 0.2));
-	}
-
+	
 	/**
 	 * This method updates the position and velocity of Mazub in both directions.
 	 * @param horizontalVelocity
@@ -603,6 +498,7 @@ public class Mazub extends GameObject{
 	 * 			If the given time does not equal a valid value.
 	 * 			|! isValidTime(deltaT)
 	 */
+	@Override
 	public void advanceTime( double horizontalVelocity, double verticalVelocity, double deltaT) 
 			throws IllegalArgumentException{
 		if (! isValidTime(deltaT))
@@ -651,7 +547,8 @@ public class Mazub extends GameObject{
 	 * 			| if(velocity <= 0)
 	 * 			| result <= (velocity * deltaT - 0.5 * this.getHorizontalAccelaration()*deltaT*deltaT)*100
 	 */
-	private double distanceTraveledHorizontal(double velocity, double deltaT){
+	@Override
+	protected double distanceTraveledHorizontal(double velocity, double deltaT){
 		if (Math.abs(velocity) == this.getMaximumHorizontalVelocity())
 			return (velocity *deltaT)*100;
 		if(velocity>0)
@@ -689,7 +586,8 @@ public class Mazub extends GameObject{
 	 * 			| if(velocity <= 0)
 	 * 			| result <= velocity - this.getHorizontalAccelaration()*deltaT
 	 */
-	private double advancedHorizontalVelocity(double velocity, double deltaT){
+	@Override
+	protected double advancedHorizontalVelocity(double velocity, double deltaT){
 		if(velocity > 0)
 			return velocity + this.getHorizontalAccelaration()*deltaT;
 		return velocity - this.getHorizontalAccelaration()*deltaT;
@@ -708,16 +606,14 @@ public class Mazub extends GameObject{
 	private double advancedVerticalVelocity(double velocity, double deltaT){
 		return velocity + (this.getVerticalAcceleration())*deltaT;
 	}
-	
-	/**
-	 * This method adds the given time to the variable this.time
-	 * @param time
-	 * 			the given time that needs to be added.
-	 * @post	The variable that registers the current game time is updated with the given time.
-	 * 			| new this.time = this.time + time
-	 */
-	private void addTime(double time){
-		this.setTime(this.getTime() + time);
+
+	@Override
+	protected void setHitPoints(int hitPoints) {
+		if(hitPoints < 0)
+			this.hitPoints=0;
+		if(hitPoints > 500)
+			this.hitPoints =500;
+		else this.hitPoints=hitPoints;
 	}
 
 }

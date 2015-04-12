@@ -8,6 +8,9 @@ import be.kuleuven.cs.som.annotate.Basic;
  * @author   Anne Wijffels
  * @author   Joni Allaert
  */
+
+//TODO: kunnen we een final static variable in game object bewaren en in een subklasse initialiseren.
+//TODO: hoe associeren we de world met gameobject zonder hem mee te geven in constructor.
 public abstract class GameObject {
 	/**
 	 * Initializes a game object with the given position and given sprite and the number of hitpoints.
@@ -21,38 +24,48 @@ public abstract class GameObject {
 	 * 		  The number of hitpoints the game object maximally possesses.
 	 */
 	protected GameObject(int pixelLeftX, int pixelBottomY, Sprite[] sprites, int hitpoints){
-		this.positionX = pixelLeftX;
-		this.positionY = pixelBottomY;
-		this.sprites = sprites;
-		this.hitPoints = hitpoints;
+		setPositionX(pixelLeftX);
+		setPositionY(pixelBottomY);
+		setSprites(sprites);
+		setHitPoints(hitpoints);
 	}
-
+	
 	public abstract void startMoveLeft();
 	public abstract void startMoveRight();
 	public abstract void endMoveLeft();
 	public abstract void endMoveRight();
-	public abstract Sprite getCurrentSprite();
 	
+
 	/**
-	 * This method gives the width of the current sprite of the game object.
+	 * This method gives you the current state of the boolean variable move.
 	 */
-	@Basic
-	public int getWidth(){
-		return this.getCurrentSprite().getWidth();
+	public boolean getMove(){
+		return this.move;
 	}
 
 	/**
-	 * This method gives the height of the current sprite of the game object.
+	 * Sets the boolean that registers if Mazub is moving.
+	 * @param flag
+	 * 			The new state.
+	 * @post	The new state variable that registers if Mazub is moving.
+	 * 			| new this.getMove() = flag
 	 */
-	@Basic
-	public int getHeight() {
-		return this.getCurrentSprite().getHeight();
+	protected void setMove(boolean flag){
+		this.move = flag;
 	}
-	/**
-	 * Array of all the images to display the game object
-	 */
-	protected Sprite[] sprites;
 
+	/**
+	 * Variable registering if Mazub is moving (true) or is not moving (false).
+	 */
+	private boolean move;
+	
+	public Sprite getCurrentSprite() {
+		if(this.getHorizontalVelocity() > 0)
+			return this.sprites[1];
+		else
+			return this.sprites[0];
+	}
+	
 	public Sprite[] getSprites() {
 		return sprites.clone();
 	}
@@ -60,6 +73,29 @@ public abstract class GameObject {
 	private void setSprites(Sprite[] sprites) {
 		this.sprites = sprites;
 	}
+	
+	/**
+	 * Array of all the images to display the game object
+	 */
+	protected Sprite[] sprites;
+	
+	/**
+	 * This method gives the width of the current sprite of the game object.
+	 */
+	@Basic
+	public int getWidth(){
+		return this.getCurrentSprite().getWidth() - 1;
+	}
+
+	/**
+	 * This method gives the height of the current sprite of the game object.
+	 */
+	@Basic
+	public int getHeight() {
+		return this.getCurrentSprite().getHeight() - 2;
+	}
+	
+	
 
 	/**
 	 * Returns the x-coordinate of the position of game object.
@@ -93,24 +129,22 @@ public abstract class GameObject {
 	 * 			minus the maximum position minus 1.
 	 * 			| ( position > 2*this.getMaxPositionX() +1) || (position < -this.getMaxPositionX() -1) 			
 	 */	
-	protected void setPositionX(int position) throws IllegalArgumentException{
-		if(!isValidPositionX(position)){
-				throw new IllegalArgumentException();
-		}
+	protected void setPositionX(int position){
 		this.positionX = position;
+		//TODO: als hij het beeld uitloopt gaat het beestje dood?
 	}
 
-	/**
-	 * A method that checks if the position of X is a valid position.
-	 * @param 	position
-	 * 			The position to check.
-	 * @return	True if and only if the value of the position is larger than the minimum value 
-	 * 			for the x-position and is smaller than the maximum value for the x-position.
-	 * 			| result = ((position>=this.getMinPositionX())&&(position<=this.getMaxPositionX()))
-	 */
-	public boolean isValidPositionX(int position){
-		return ((position>=this.getMinPositionX())&&(position<=this.getMaxPositionX()));
-	}
+//	/**
+//	 * A method that checks if the position of X is a valid position.
+//	 * @param 	position
+//	 * 			The position to check.
+//	 * @return	True if and only if the value of the position is larger than the minimum value 
+//	 * 			for the x-position and is smaller than the maximum value for the x-position.
+//	 * 			| result = ((position>=this.getMinPositionX())&&(position<=this.getMaxPositionX()))
+//	 */
+//	public boolean isValidPositionX(int position){
+//		return ((position>=this.getMinPositionX())&&(position<=this.getMaxPositionX()));
+//	}
 
 	/**
 	 * Variable that registers the x-coordinate of the game object.
@@ -145,77 +179,99 @@ public abstract class GameObject {
 	 * 			| if (position< this.getMinPositionY())
 	 * 			| 		new.getPositionY() = this.getMinPositionY()
 	 */
-	protected void setPositionY(int position) throws IllegalArgumentException{
-		if(!isValidPositionY(position)){
-			throw new IllegalArgumentException();
-		}
+	protected void setPositionY(int position){
 		this.positionY = position;
+		//TODO: analoog aan X.
 	}
 
-	/**
-	 * A method that checks if the position of Y is a valid position.
-	 * @param 	position
-	 * 			The position to check.
-	 * @return	True if and only if the value of the position is larger than the minimum value for 
-	 * 			the y-position and is smaller than the maximum value for the y-position.
-	 * 			| result = ((position>=this.getMinPositionY())&&(position<=this.getMaxPositionY()))
-	 */
-	public boolean isValidPositionY(int position){
-		return ((position>=this.getMinPositionY())&&(position<=this.getMaxPositionY()));
-	}
+//	/**
+//	 * A method that checks if the position of Y is a valid position.
+//	 * @param 	position
+//	 * 			The position to check.
+//	 * @return	True if and only if the value of the position is larger than the minimum value for 
+//	 * 			the y-position and is smaller than the maximum value for the y-position.
+//	 * 			| result = ((position>=this.getMinPositionY())&&(position<=this.getMaxPositionY()))
+//	 */
+//	public boolean isValidPositionY(int position){
+//		return ((position>=this.getMinPositionY())&&(position<=this.getMaxPositionY()));
+//	}
 
 	/**
 	 * Variable registering the y-coordinate of the game object.
 	 */
 	private int positionY;
 	
+
+	/**
+	 * This method gives you the current horizontal velocity of Mazub.
+	 */
+	public double getHorizontalVelocity(){
+		return horizontalVelocity;
+	}
+	
+	protected abstract void setHorizontalVelocity(double velocity);
+	
+	public abstract boolean isValidHorizontalVelocity(double velocity);
+
+	protected double horizontalVelocity;
 	
 	/**
-	 * This method gives you the minimal x-position of the game object.
+	 * This method gives you the current vertical velocity of Mazub.
 	 */
-	public int getMinPositionX(){
-		return MIN_POSITIONX;
+	public double getVerticalVelocity(){
+		return verticalVelocity;
 	}
-
-	/**
-	 * Variable that registers the minimal x-position of the game object.
-	 */
-	private static final int MIN_POSITIONX = 0;
-
-	/**
-	 * This method gives you the maximal x-position of the game object.
-	 */
-	public int getMaxPositionX(){
-		return MAX_POSITIONX;
-	}
-	/**
-	 * Variable that registers the maximal x-position of the game object.
-	 */
-	private static final int MAX_POSITIONX = 1023;
 	
-	/**
-	 * This method gives you the minimal y-position of the game object.
-	 */
-	public int getMinPositionY(){
-		return MIN_POSITIONY;
-	}
-
-	/**
-	 * Variable registering the minimal y-coordinate of the game object.
-	 */
-	private static final int MIN_POSITIONY = 0;
-
-	/**
-	 * This method gives you the maximal y-position of the game object.
-	 */
-	public int getMaxPositionY(){
-		return MAX_POSITIONY;
-	}
-
-	/**
-	 * Variable registering the maximal y-coordinate of the game object.
-	 */
-	private static final int MAX_POSITIONY = 767;
+	protected abstract void setVerticalVelocity(double velocity);
+	
+	protected double verticalVelocity;
+	
+//	/**
+//	 * This method gives you the minimal x-position of the game object.
+//	 */
+//	public int getMinPositionX(){
+//		return MIN_POSITIONX;
+//	}
+//
+//	/**
+//	 * Variable that registers the minimal x-position of the game object.
+//	 */
+//	private static final int MIN_POSITIONX = 0;
+//
+//	/**
+//	 * This method gives you the maximal x-position of the game object.
+//	 */
+//	public int getMaxPositionX(){
+//		return MAX_POSITIONX;
+//	}
+//	/**
+//	 * Variable that registers the maximal x-position of the game object.
+//	 */
+//	private static final int MAX_POSITIONX = 1023;
+//	
+//	/**
+//	 * This method gives you the minimal y-position of the game object.
+//	 */
+//	public int getMinPositionY(){
+//		return MIN_POSITIONY;
+//	}
+//
+//	/**
+//	 * Variable registering the minimal y-coordinate of the game object.
+//	 */
+//	private static final int MIN_POSITIONY = 0;
+//
+//	/**
+//	 * This method gives you the maximal y-position of the game object.
+//	 */
+//	public int getMaxPositionY(){
+//		return MAX_POSITIONY;
+//	}
+//
+//	/**
+//	 * Variable registering the maximal y-coordinate of the game object.
+//	 */
+//	private static final int MAX_POSITIONY = 767;
 	
 	/**
 	 * This method gives you the current time duration of the game.
@@ -236,6 +292,18 @@ public abstract class GameObject {
 		this.time = time;
 	}
 
+
+	/**
+	 * This method adds the given time to the variable this.time
+	 * @param time
+	 * 			the given time that needs to be added.
+	 * @post	The variable that registers the current game time is updated with the given time.
+	 * 			| new this.time = this.time + time
+	 */
+	protected void addTime(double time){
+		this.setTime(this.getTime() + time);
+	}
+	
 	/**
 	 * A variable that keeps track of the time that has passed.
 	 */
@@ -266,6 +334,32 @@ public abstract class GameObject {
 	 */
 	private double timeLastLeft=-2;
 	
+	
+	
+	/**
+	 * This method gives you the time when Mazub last started moving left.
+	 */
+	@Basic
+	public double getTimeStartLeft(){
+		return this.timeStartLeft;
+	}
+
+	/**
+	 * Sets the time when Mazub last started moving to the left.
+	 * @param time
+	 * 			The new time when Mazub last started moving to the left.
+	 * @post	The new time when Mazub last started moving to the left is equal to the given time.
+	 * 			| new this.getTimeStartLeft = time
+	 */
+	protected void setTimeStartLeft(double time){
+		this.timeStartLeft = time;
+	}
+
+	/**
+	 * Variable registering the time when Mazub starts moving to the left.
+	 */
+	private double timeStartLeft;
+	
 	/**
 	 * This method gives you the time when the game object last finished moving right.
 	 */
@@ -292,10 +386,49 @@ public abstract class GameObject {
 	private double timeLastRight=-2;
 	
 	/**
-	 * Variable registering the number of hitpoints of the game object.
+	 * This method gives you the time when Mazub last started moving right.
 	 */
-	private int hitPoints;
+	@Basic
+	public double getTimeStartRight(){
+		return this.timeStartRight;
+	}
 
+	/**
+	 * Sets the time when Mazub last started moving to the right.
+	 * @param time
+	 * 			The new time when Mazub last started moving to the right.
+	 * @post	The new time when Mazub last started moving to the right is equal to the given time.
+	 * 			| new this.getTimeStartRight = time
+	 */
+	protected void setTimeStartRight(double time){
+		this.timeStartRight = time;
+	}
+
+	/**
+	 * Variable registering the time when Mazub starts moving to the right. 
+	 */
+	private double timeStartRight;
+	
+	
+	public abstract void advanceTime(double horizontalVelocity, double verticalVelocity, double deltaT);
+	
+	protected abstract double distanceTraveledHorizontal(double velocity, double deltaT);
+	
+	protected abstract double advancedHorizontalVelocity(double velocity, double deltaT);
+
+
+	/**
+	 * A method that checks if the time duration is valid.
+	 * @param 	deltaT
+	 * 			a time duration in seconds.
+	 * @return 	True if deltaT is bigger than zero and smaller than 0.2.
+	 * 			result == ((deltaT >= 0) && (deltaT<= 0.2))
+	 */
+	public boolean isValidTime(double deltaT){
+		return((deltaT >=0)&&(deltaT <= 0.2));
+	}
+	
+	
 	/**
 	 * Returns the current number of hitpoints that the game object possesses.
 	 */
@@ -307,23 +440,27 @@ public abstract class GameObject {
 	 * @param hitPoints
 	 * 		  The new number of hitpoints the game object possesses.
 	 */
-	protected void setHitPoints(int hitPoints) {
-		this.hitPoints = hitPoints;
-	}
+	protected abstract void setHitPoints(int hitPoints);
+	
+	/**
+	 * Variable registering the number of hitpoints of the game object.
+	 */
+	protected int hitPoints;
+		
 	/**
 	 * This method changes the status of the game object to terminated.
 	 */
 	protected void terminates(){
 		this.dead = true;
 	}
+		
+	public boolean isTerminated(){
+		return dead;
+	}
+	
 	/**
 	 * Variable registering if a game object is terminated or not.
 	 */
 	private boolean dead;
 	
-	public boolean isTerminated(){
-		return dead;
-	}
-	
-//	public abstract void advanceTime(double deltaT);
 }

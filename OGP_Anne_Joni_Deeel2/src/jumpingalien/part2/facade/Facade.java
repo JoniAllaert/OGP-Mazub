@@ -28,7 +28,6 @@ public class Facade implements jumpingalien.part2.facade.IFacadePart2 {
 	 */
 	@Override
 	public Mazub createMazub(int pixelLeftX, int pixelBottomY, Sprite[] sprites) {
-		// TODO Auto-generated method stub
 		Mazub mazub = new Mazub(pixelLeftX, pixelBottomY, sprites);
 		return mazub;
 	}
@@ -44,7 +43,6 @@ public class Facade implements jumpingalien.part2.facade.IFacadePart2 {
 	 */
 	@Override
 	public int[] getLocation(Mazub alien) {
-		// TODO Auto-generated method stub
 		int[] array = {alien.getPositionX(), alien.getPositionY()};
 		return array;
 	}
@@ -61,7 +59,6 @@ public class Facade implements jumpingalien.part2.facade.IFacadePart2 {
 	 */
 	@Override
 	public double[] getVelocity(Mazub alien) {
-		// TODO Auto-generated method stub
 		double[] array = {alien.getHorizontalVelocity(), alien.getVerticalVelocity()};
 		return array;
 	}
@@ -78,7 +75,6 @@ public class Facade implements jumpingalien.part2.facade.IFacadePart2 {
 	 */
 	@Override
 	public double[] getAcceleration(Mazub alien) {
-		// TODO Auto-generated method stub
 		double[] array = {alien.getHorizontalAccelaration(), alien.getVerticalAcceleration()};
 		return array;
 	}
@@ -94,7 +90,6 @@ public class Facade implements jumpingalien.part2.facade.IFacadePart2 {
 	 */
 	@Override
 	public int[] getSize(Mazub alien) {
-		// TODO Auto-generated method stub
 		int[] array = {alien.getCurrentSprite().getWidth(), alien.getCurrentSprite().getHeight()};
 		return array;
 	}
@@ -110,7 +105,6 @@ public class Facade implements jumpingalien.part2.facade.IFacadePart2 {
 	 */
 	@Override
 	public Sprite getCurrentSprite(Mazub alien) {
-		// TODO Auto-generated method stub
 		return alien.getCurrentSprite();
 	}
 
@@ -122,7 +116,6 @@ public class Facade implements jumpingalien.part2.facade.IFacadePart2 {
 	 */
 	@Override
 	public void startJump(Mazub alien) {
-		// TODO Auto-generated method stub
 		try{
 			alien.startJump();
 		}
@@ -139,7 +132,6 @@ public class Facade implements jumpingalien.part2.facade.IFacadePart2 {
 	 */
 	@Override
 	public void endJump(Mazub alien) {
-		// TODO Auto-generated method stub
 		try{
 			alien.endJump();
 		}
@@ -158,7 +150,6 @@ public class Facade implements jumpingalien.part2.facade.IFacadePart2 {
 	 */
 	@Override
 	public void startMoveLeft(Mazub alien) {
-		// TODO Auto-generated method stub
 		try{
 		alien.startMoveLeft();
 		}
@@ -175,7 +166,6 @@ public class Facade implements jumpingalien.part2.facade.IFacadePart2 {
 	 */
 	@Override
 	public void endMoveLeft(Mazub alien) {
-		// TODO Auto-generated method stub
 		try{
 			alien.endMoveLeft();
 		}
@@ -192,7 +182,6 @@ public class Facade implements jumpingalien.part2.facade.IFacadePart2 {
 	 */
 	@Override
 	public void startMoveRight(Mazub alien) {
-		// TODO Auto-generated method stub
 		try{
 			alien.startMoveRight();
 		}
@@ -210,7 +199,6 @@ public class Facade implements jumpingalien.part2.facade.IFacadePart2 {
 	 */
 	@Override
 	public void endMoveRight(Mazub alien) {
-		// TODO Auto-generated method stub
 		try{
 			alien.endMoveRight();
 		}
@@ -227,7 +215,6 @@ public class Facade implements jumpingalien.part2.facade.IFacadePart2 {
 	 */
 	@Override
 	public void startDuck(Mazub alien) {
-		// TODO Auto-generated method stub
 		try{
 			alien.startDuck();
 		}
@@ -245,7 +232,6 @@ public class Facade implements jumpingalien.part2.facade.IFacadePart2 {
 	 */
 	@Override
 	public void endDuck(Mazub alien) {
-		// TODO Auto-generated method stub
 		try{
 			alien.endDuck();
 		}
@@ -282,9 +268,14 @@ public class Facade implements jumpingalien.part2.facade.IFacadePart2 {
 	 */
 	public World createWorld(int tileSize, int nbTilesX, int nbTilesY,
 			int visibleWindowWidth, int visibleWindowHeight, int targetTileX,
-			int targetTileY){
+			int targetTileY) throws ModelException{
+		try{
 		World world = new World(tileSize, nbTilesX, nbTilesY, visibleWindowWidth, visibleWindowHeight, targetTileX, targetTileY);
 		return world;
+		}
+		catch(IllegalArgumentException ext){
+			throw new ModelException("");
+		}
 	}
 
 	/**
@@ -327,7 +318,7 @@ public class Facade implements jumpingalien.part2.facade.IFacadePart2 {
 	 *            world for which to start the game.
 	 */
 	public void startGame(World world){
-		//TODO: geen idee.
+		//TODO
 	}
 
 	/**
@@ -376,8 +367,13 @@ public class Facade implements jumpingalien.part2.facade.IFacadePart2 {
 	 * @return The pixel coordinates of the visible window, in the order
 	 *         <b>left, bottom, right, top</b>.
 	 */
-	public int[] getVisibleWindow(World world){
+	public int[] getVisibleWindow(World world)throws ModelException{
+		try{
 		return world.getVisibleWindow();
+		}
+		catch(IllegalStateException ext){
+			throw new ModelException("");
+		}
 	}
 
 	/**
@@ -422,7 +418,7 @@ public class Facade implements jumpingalien.part2.facade.IFacadePart2 {
 	 */
 	public int[][] getTilePositionsIn(World world, int pixelLeft, int pixelBottom,
 			int pixelRight, int pixelTop){ 
-			return world.getTilePositions(pixelLeft, pixelBottom,pixelRight, pixelTop);
+			return world.getTilePositions(pixelLeft, pixelBottom, pixelRight, pixelTop);
 	}
 
 	/**
@@ -539,7 +535,7 @@ public class Facade implements jumpingalien.part2.facade.IFacadePart2 {
 	 *            The plant that needs to be added to the world.
 	 */
 	public void addPlant(World world, Plant plant){
-		world.addPlant(plant);
+		world.addGameObject(plant);
 	}
 
 	/**
@@ -552,7 +548,7 @@ public class Facade implements jumpingalien.part2.facade.IFacadePart2 {
 	 *         collection, but each plant may only be returned once.
 	 */
 	public Collection<Plant> getPlants(World world){
-		return world.getPlants();
+		return world.listPlant();
 	}
 
 	/**
@@ -609,7 +605,7 @@ public class Facade implements jumpingalien.part2.facade.IFacadePart2 {
 	 *            The shark that needs to be added to the world.
 	 */
 	public void addShark(World world, Shark shark){
-		world.addShark(shark);
+		world.addGameObject(shark);
 	}
 
 	/**
@@ -622,7 +618,7 @@ public class Facade implements jumpingalien.part2.facade.IFacadePart2 {
 	 *         collection, but each shark may only be returned once.
 	 */
 	public Collection<Shark> getSharks(World world){
-		return world.getSharks();
+		return world.listShark();
 	}
 
 	/**
@@ -658,8 +654,8 @@ public class Facade implements jumpingalien.part2.facade.IFacadePart2 {
 	 */
 	public School createSchool(){
 		School school = new School();
-		return null;
-		//TODO
+		return school;
+		//TODO: hoe beperk je het aantal scholen tot 10 ? 
 	}
 
 	/**
@@ -692,7 +688,7 @@ public class Facade implements jumpingalien.part2.facade.IFacadePart2 {
 	 *            The slime that needs to be added to the world.
 	 */
 	public void addSlime(World world, Slime slime){
-		world.addSlime(slime);
+		world.addGameObject(slime);
 	}
 
 	/**
@@ -705,7 +701,7 @@ public class Facade implements jumpingalien.part2.facade.IFacadePart2 {
 	 *         collection, but each slime may only be returned once.
 	 */
 	public Collection<Slime> getSlimes(World world){
-		return world.getSlimes();
+		return world.listSlime();
 	}
 
 	/**
@@ -744,7 +740,6 @@ public class Facade implements jumpingalien.part2.facade.IFacadePart2 {
 	 */
 	public School getSchool(Slime slime){
 		return slime.getSchool();
-		//TODO: kijken naar school in slime.
 	}
 
 }

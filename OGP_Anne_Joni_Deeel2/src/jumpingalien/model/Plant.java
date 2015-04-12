@@ -36,10 +36,9 @@ public class Plant extends GameObject{
 	 */
 	@Override
 	public void startMoveLeft() {
-		this.setVelocity(INITIAL_VELOCITY);
-		//this.setTimeLastLeft(this.getTime());
-		
-		
+		this.setHorizontalVelocity(getInitialHorizontalVelocity());
+		this.setMove(true);
+		this.setTimeLastLeft(this.getTime());		
 	}
 
 	/**
@@ -55,8 +54,9 @@ public class Plant extends GameObject{
 	 */
 	@Override
 	public void startMoveRight() {
-		this.setVelocity(-INITIAL_VELOCITY);
-		//this.setTimeLastRight(this.getTime());
+		this.setHorizontalVelocity(-getInitialHorizontalVelocity());
+		this.setMove(true);
+		this.setTimeLastRight(this.getTime());
 		
 	}
 	/**
@@ -71,7 +71,9 @@ public class Plant extends GameObject{
 	 */
 	@Override
 	public void endMoveLeft() {
-		this.setVelocity(0);
+		this.setHorizontalVelocity(0);
+		this.setMove(false);
+
 		
 	}
 
@@ -87,54 +89,90 @@ public class Plant extends GameObject{
 	 */	
 	@Override
 	public void endMoveRight() {
-		this.setVelocity(0);
+		this.setHorizontalVelocity(0);
+		this.setMove(false);
+
 		
 	}
-	/**
-	 * Variable registering the velocity of the plant.
-	 */
-	private double velocity;
+	
+	private static double getInitialHorizontalVelocity(){
+		return INITIAL_HORIZONTAL_VELOCITY;
+	}
 	
 	/**
 	 * Variable registering the initial velocity of the plant.
 	 */
-	private static final double INITIAL_VELOCITY = 0.5;
+	private static final double INITIAL_HORIZONTAL_VELOCITY = 0.5;
 
-	/**
-	 * Gives the velocity of the plant.
-	 */
-	public double getVelocity() {
-		return velocity;
-	}
 
-	/**
-	 * Sets the velocity of the plant to the given velocity.
-	 * @param velocity
-	 * 			The new velocity of the plant.
-	 */
-	public void setVelocity(double velocity) {
-		this.velocity = velocity;
-	}
-
-	/**
-	 * This method returns the current sprite of the plant.
-	 */
 	@Override
-	public Sprite getCurrentSprite() {
-		// TODO Auto-generated method stub
-		return null;
+	public void advanceTime(double horizontalVelocity, double verticalVelocity,
+			double deltaT) throws IllegalArgumentException{
+		if (! isValidTime(deltaT))
+			throw new IllegalArgumentException();
+		this.addTime(deltaT);
+		this.getCurrentSprite();
+		if(this.getMove() == true)
+			setPositionX((int) (this.getPositionX() + distanceTraveledHorizontal(this.getHorizontalVelocity(), deltaT)));
+		if((this.getTimeLastLeft() + 0.5 >= this.getTime())&&(this.getTimeLastRight() + 0.5 <= this.getTime())){
+			endMoveLeft();
+			startMoveRight();
+		}
+		else {
+			endMoveRight();
+			startMoveLeft();
+		}
+		
+		//TODO: hoe controlleren we dat het precies om de 0.5 seconden wisselt?
+		
+	}
+	
+
+	@Override
+	protected double distanceTraveledHorizontal(double velocity, double deltaT) {
+		return velocity*deltaT*100;
 	}
 
-	public void advanceTime(double horizontalVelocity,
-			double deltaT) {
-//		if((this.getTimeLastLeft() + 0.5 >= this.getTime())&&(this.getTimeLastRight() + 0.5 <= this.getTime())){
-//			endMoveLeft();
-//			startMoveRight();
-//		}
-//		else {
-//			endMoveRight();
-//			startMoveLeft();
-		}
+	@Override
+	protected double advancedHorizontalVelocity(double velocity, double deltaT) {
+		return 0;
+	}
+
+	@Override
+	protected void setHorizontalVelocity(double velocity) throws IllegalArgumentException {
+		if(!isValidHorizontalVelocity(velocity)&& velocity > 0)
+			horizontalVelocity = getInitialHorizontalVelocity();
+		else if(!isValidHorizontalVelocity(velocity)&& velocity < 0)
+			horizontalVelocity = -getInitialHorizontalVelocity();			
+		else horizontalVelocity =velocity;	
+	}	
+
+	
+	@Override
+	public boolean isValidHorizontalVelocity(double velocity) {
+		if(Math.abs(velocity) == getInitialHorizontalVelocity())
+			return true;
+		return false;
+	}
+	
+
+	@Override
+	protected void setVerticalVelocity(double velocity) {
+		verticalVelocity = 0;
+	}
+
+	@Override
+	protected void setHitPoints(int hitPoints) {
+		if(hitPoints > 1)
+			this.hitPoints = 1;
+		else if(hitPoints <0)
+			this.hitPoints = 0;
+		else
+			this.hitPoints = hitPoints;
+	}
+
+	
+
 		
 }
 
