@@ -318,7 +318,7 @@ public class Facade implements jumpingalien.part2.facade.IFacadePart2 {
 	 *            world for which to start the game.
 	 */
 	public void startGame(World world){
-		//TODO
+		world.startGame();
 	}
 
 	/**

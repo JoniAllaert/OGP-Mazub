@@ -8,6 +8,7 @@ import jumpingalien.model.Tile;
 import jumpingalien.model.GameObject;
 import jumpingalien.util.ModelException;
 
+//TODO: checken of we de arraylist kunnen behouden of dat we misschien een HashSet moeten gebruiken.
 
 public class World {
 	public World (int tileSize, int nbTilesX, int nbTilesY,int visibleWindowWidth, int visibleWindowHeight, 
@@ -342,12 +343,14 @@ public class World {
 		catch(IllegalStateException ext){
 			 if((tileObject.getTileX()+tileObject.getLength()-1 )== object.getPositionY()){
 					if(gameObjects.size()>= 100)
-						return;
-						else{ 
-							gameObjects.add(object);
-							if(object instanceof Slime)
-								addSchool(((Slime) object).getSchool());
-						}
+						throw ext;
+					else if(this.getGameIsStarted())
+						throw ext;
+					else{ 
+						gameObjects.add(object);
+						if(object instanceof Slime)
+							addSchool(((Slime) object).getSchool());
+					}
 			 }
 			 else throw ext;
 		}
@@ -398,12 +401,27 @@ public class World {
 	}
 	
 	public void startGame(){
-		//TODO
+		setGameIsStarted(true);
+		//TODO: moeten we hier dan nog iets doen?
 	}
 	
+	private boolean getGameIsStarted() {
+		return gameIsStarted;
+	}
+
+
+	public void setGameIsStarted(boolean gameIsStarted) {
+		this.gameIsStarted = gameIsStarted;
+	}
+
+	private boolean gameIsStarted;
+	
 	public boolean isGameOver(){
-		if((mazub.getPositionX() == getTargetTileX() && mazub.getPositionY() == getTargetTileY())||(mazub.isTerminated() == true))
+		if((mazub.getPositionX() == getTargetTileX() && 
+				mazub.getPositionY() == getTargetTileY())||(mazub.isTerminated() == true)){
+			setGameIsStarted(false);
 			return true;
+		}
 		return false;
 	}
 	
